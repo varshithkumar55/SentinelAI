@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+/* ===========================
+   SentinelAI Design Tokens
+=========================== */
+
+:root{
+  --primary:#1E3A8A;
+  --secondary:#0F172A;
+  --accent:#14B8A6;
+  --success:#22C55E;
+  --warning:#F59E0B;
+  --danger:#EF4444;
+  --background:#F8FAFC;
+  --surface:#FFFFFF;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  padding:0;
+  background:var(--background);
+  color:#111827;
+  font-family:Inter,system-ui,sans-serif;
+}
