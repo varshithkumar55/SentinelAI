@@ -1,77 +1,102 @@
-import { ShieldAlert, Brain, Target, BadgeCheck } from "lucide-react";
+import {
+    ShieldAlert,
+    Brain,
+    Target,
+    CheckCircle2
+} from "lucide-react";
 
 function MetricsGrid({ data }) {
 
-  const missionScore = Math.round(
-    (data.confidence * 0.7) +
-    (data.risk_level === "Low"
-      ? 30
-      : data.risk_level === "Medium"
-      ? 20
-      : data.risk_level === "High"
-      ? 10
-      : 5)
-  );
+    const missionScore = Math.round(
+        (data.confidence * 0.75) +
+        (
+            data.risk_level === "Low"
+            ? 25
+            : data.risk_level === "Medium"
+            ? 18
+            : data.risk_level === "High"
+            ? 8
+            : 4
+        )
+    );
 
-  const cards = [
-    {
-      title: "Risk Level",
-      value: data.risk_level,
-      icon: ShieldAlert,
-    },
-    {
-      title: "AI Confidence",
-      value: `${data.confidence}%`,
-      icon: Brain,
-    },
-    {
-      title: "Mission Score",
-      value: `${missionScore}%`,
-      icon: Target,
-    },
-    {
-      title: "Strategy",
-      value: "Ready",
-      icon: BadgeCheck,
-    },
-  ];
+    const metrics = [
 
-  return (
-    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        {
+            title: "Risk Level",
+            value: data.risk_level,
+            icon: ShieldAlert,
+            bg: "bg-red-50",
+            color: "text-red-600"
+        },
 
-      {cards.map((card) => {
+        {
+            title: "AI Confidence",
+            value: `${data.confidence}%`,
+            icon: Brain,
+            bg: "bg-blue-50",
+            color: "text-blue-700"
+        },
 
-        const Icon = card.icon;
+        {
+            title: "Mission Score",
+            value: `${missionScore}%`,
+            icon: Target,
+            bg: "bg-green-50",
+            color: "text-green-700"
+        },
 
-        return (
+        {
+            title: "Status",
+            value: "READY",
+            icon: CheckCircle2,
+            bg: "bg-emerald-50",
+            color: "text-emerald-700"
+        }
 
-          <div
-            key={card.title}
-            className="rounded-2xl bg-white p-6 shadow-sm"
-          >
+    ];
 
-            <div className="flex items-center justify-between">
+    return (
 
-              <p className="text-slate-500">
-                {card.title}
-              </p>
+        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
 
-              <Icon size={22} />
+            {metrics.map((item) => {
 
-            </div>
+                const Icon = item.icon;
 
-            <h2 className="mt-4 text-3xl font-bold">
-              {card.value}
-            </h2>
+                return (
 
-          </div>
+                    <div
+                        key={item.title}
+                        className={`${item.bg} rounded-3xl border border-slate-200 p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl`}
+                    >
 
-        );
+                        <div className="flex items-center justify-between">
 
-      })}
+                            <p className="text-sm font-medium text-slate-500">
+                                {item.title}
+                            </p>
 
-    </div>
-  );
+                            <Icon className={item.color} size={24} />
+
+                        </div>
+
+                        <h2 className={`mt-6 text-4xl font-bold ${item.color}`}>
+
+                            {item.value}
+
+                        </h2>
+
+                    </div>
+
+                );
+
+            })}
+
+        </div>
+
+    );
+
 }
 
 export default MetricsGrid;
