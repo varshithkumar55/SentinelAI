@@ -1,36 +1,27 @@
-from app.models.response import AIResponse
+import json
+
+import google.generativeai as genai
+
+from app.core.config import GEMINI_API_KEY
+from app.services.prompt_builder import build_prompt
+
+genai.configure(api_key=GEMINI_API_KEY)
+
+model = genai.GenerativeModel("gemini-2.5-flash")
 
 
 def analyze_scenario(data):
 
-    return AIResponse(
-        summary="AI analysis completed successfully.",
+    prompt = build_prompt(data)
 
-        risk_level="Medium",
+    response = model.generate_content(prompt)
 
-        confidence=91,
+    text = response.text.strip()
 
-        recommended_strategy="Adaptive Resource Deployment",
+    if text.startswith("```json"):
+        text = text.replace("```json", "").replace("```", "").strip()
 
-        reasoning=[
-            "Uses available resources efficiently.",
-            "Balances mission speed and safety.",
-            "Minimizes operational risk."
-        ],
+    elif text.startswith("```"):
+        text = text.replace("```", "").strip()
 
-        alternative_strategies=[
-            "Rapid Deployment",
-            "Distributed Resource Allocation",
-            "Conservative Risk Mitigation"
-        ],
-
-        resource_plan="Allocate personnel in phases.",
-
-        timeline="2 Days",
-
-        key_risks=[
-            "Weather uncertainty",
-            "Limited equipment availability",
-            "Communication delays"
-        ]
-    )
+    return json.loads(text)
