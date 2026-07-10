@@ -7,11 +7,31 @@ import {
 } from "lucide-react";
 
 const menu = [
-  { icon: LayoutDashboard, label: "Dashboard" },
-  { icon: ClipboardList, label: "Scenario Builder" },
-  { icon: FileText, label: "Reports" },
-  { icon: History, label: "History" },
-  { icon: Settings, label: "Settings" },
+  {
+    icon: LayoutDashboard,
+    label: "Dashboard",
+    path: "/dashboard",
+  },
+  {
+    icon: ClipboardList,
+    label: "Scenario Builder",
+    path: "/scenario",
+  },
+  {
+    icon: FileText,
+    label: "Reports",
+    path: "/reports",
+  },
+  {
+    icon: History,
+    label: "History",
+    path: "/history",
+  },
+  {
+    icon: Settings,
+    label: "Settings",
+    path: "/settings",
+  },
 ];
 
 function Sidebar() {
