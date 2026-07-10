@@ -10,39 +10,269 @@ function ScenarioForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="mt-10 space-y-6 rounded-3xl bg-white p-8 shadow-sm"
+      className="mt-10 rounded-3xl bg-white p-8 shadow-sm space-y-8"
     >
-      <div>
-        <label className="mb-2 block font-medium">
-          Scenario Name
-        </label>
+      {/* Basic Information */}
 
-        <input
-          {...register("scenario")}
-          className="w-full rounded-xl border border-slate-300 p-3"
-          placeholder="Operation Falcon"
-        />
-      </div>
+      <section>
+        <h2 className="mb-6 text-2xl font-bold">
+          Basic Information
+        </h2>
 
-      <div>
-        <label className="mb-2 block font-medium">
-          Mission Objective
-        </label>
+        <div className="grid gap-6 md:grid-cols-2">
+
+          <div>
+            <label className="mb-2 block font-medium">
+              Scenario Name
+            </label>
+
+            <input
+              {...register("scenario")}
+              className="w-full rounded-xl border p-3"
+              placeholder="Operation Falcon"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block font-medium">
+              Mission Name
+            </label>
+
+            <input
+              {...register("mission")}
+              className="w-full rounded-xl border p-3"
+              placeholder="Border Surveillance"
+            />
+          </div>
+
+        </div>
+
+        <div className="mt-6">
+          <label className="mb-2 block font-medium">
+            Mission Objective
+          </label>
+
+          <textarea
+            {...register("objective")}
+            rows={5}
+            className="w-full rounded-xl border p-3"
+            placeholder="Describe the objective..."
+          />
+        </div>
+      </section>
+
+      {/* Mission Settings */}
+
+      <section>
+
+        <h2 className="mb-6 text-2xl font-bold">
+          Mission Settings
+        </h2>
+
+        <div className="grid gap-6 md:grid-cols-2">
+
+          <Select
+            label="Mission Type"
+            register={register}
+            name="missionType"
+            options={[
+              "Defense",
+              "Disaster Response",
+              "Medical",
+              "Logistics",
+              "Cyber",
+            ]}
+          />
+
+          <Select
+            label="Environment"
+            register={register}
+            name="environment"
+            options={[
+              "Urban",
+              "Rural",
+              "Forest",
+              "Mountain",
+              "Coastal",
+              "Desert",
+            ]}
+          />
+
+          <Select
+            label="Priority"
+            register={register}
+            name="priority"
+            options={[
+              "Low",
+              "Medium",
+              "High",
+              "Critical",
+            ]}
+          />
+
+          <Select
+            label="Risk Tolerance"
+            register={register}
+            name="riskTolerance"
+            options={[
+              "Low",
+              "Medium",
+              "High",
+            ]}
+          />
+
+        </div>
+
+      </section>
+
+      {/* Resources */}
+
+      <section>
+
+        <h2 className="mb-6 text-2xl font-bold">
+          Available Resources
+        </h2>
+
+        <div className="grid gap-6 md:grid-cols-2">
+
+          <Input
+            label="Personnel"
+            register={register}
+            name="personnel"
+          />
+
+          <Input
+            label="Vehicles"
+            register={register}
+            name="vehicles"
+          />
+
+          <Input
+            label="Equipment"
+            register={register}
+            name="equipment"
+          />
+
+          <Input
+            label="Budget"
+            register={register}
+            name="budget"
+          />
+
+        </div>
+
+      </section>
+
+      {/* Constraints */}
+
+      <section>
+
+        <h2 className="mb-6 text-2xl font-bold">
+          Operational Constraints
+        </h2>
 
         <textarea
-          {...register("objective")}
-          rows="4"
-          className="w-full rounded-xl border border-slate-300 p-3"
-          placeholder="Describe the objective..."
+          {...register("constraints")}
+          rows={4}
+          className="w-full rounded-xl border p-3"
+          placeholder="Describe constraints..."
         />
-      </div>
+
+      </section>
+
+      {/* Timeline */}
+
+      <section>
+
+        <h2 className="mb-6 text-2xl font-bold">
+          Timeline
+        </h2>
+
+        <div className="grid gap-6 md:grid-cols-2">
+
+          <div>
+
+            <label className="mb-2 block font-medium">
+              Start Date
+            </label>
+
+            <input
+              type="date"
+              {...register("startDate")}
+              className="w-full rounded-xl border p-3"
+            />
+
+          </div>
+
+          <Input
+            label="Expected Duration"
+            register={register}
+            name="duration"
+          />
+
+        </div>
+
+      </section>
+
+      {/* Notes */}
+
+      <section>
+
+        <h2 className="mb-6 text-2xl font-bold">
+          Additional Notes
+        </h2>
+
+        <textarea
+          {...register("notes")}
+          rows={4}
+          className="w-full rounded-xl border p-3"
+        />
+
+      </section>
 
       <button
-        className="rounded-xl bg-blue-900 px-8 py-3 font-semibold text-white hover:bg-blue-800"
+        className="w-full rounded-xl bg-blue-900 py-4 text-lg font-semibold text-white transition hover:bg-blue-800"
       >
-        Analyze Scenario
+        Analyze Scenario with AI
       </button>
+
     </form>
+  );
+}
+
+function Input({ label, register, name }) {
+  return (
+    <div>
+      <label className="mb-2 block font-medium">
+        {label}
+      </label>
+
+      <input
+        {...register(name)}
+        className="w-full rounded-xl border p-3"
+      />
+    </div>
+  );
+}
+
+function Select({ label, register, name, options }) {
+  return (
+    <div>
+      <label className="mb-2 block font-medium">
+        {label}
+      </label>
+
+      <select
+        {...register(name)}
+        className="w-full rounded-xl border p-3"
+      >
+        {options.map((option) => (
+          <option key={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 }
 
