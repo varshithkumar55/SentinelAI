@@ -4,6 +4,7 @@ import LandingPage from "../pages/Landing/LandingPage";
 import Login from "../pages/Login/Login";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import ScenarioBuilder from "../pages/ScenarioBuilder/ScenarioBuilder";
+import Results from "../pages/Results/Results";
 function AppRoutes() {
   return (
     <Routes>
@@ -15,6 +16,10 @@ function AppRoutes() {
       <Route
       path="/scenario"
       element={<ScenarioBuilder />}
+      />
+      <Route
+      path="/results"
+      element={<Results />}
       />
     </Routes>
   );

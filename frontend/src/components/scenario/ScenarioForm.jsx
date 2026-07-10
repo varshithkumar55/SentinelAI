@@ -1,11 +1,26 @@
 import { useForm } from "react-hook-form";
-
+import { useNavigate } from "react-router-dom";
+import { analyzeScenario } from "../../services/api/scenarioApi";
 function ScenarioForm() {
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  const navigate = useNavigate();
+
+const onSubmit = async (data) => {
+  try {
+    const result = await analyzeScenario(data);
+
+    console.log(result);
+
+    navigate("/results", {
+      state: result,
+    });
+
+  } catch (error) {
+    console.error(error);
+    alert("Analysis failed.");
+  }
+};
 
   return (
     <form
