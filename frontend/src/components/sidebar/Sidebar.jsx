@@ -6,6 +6,8 @@ import {
   Settings,
 } from "lucide-react";
 
+import { useNavigate, useLocation } from "react-router-dom";
+
 const menu = [
   {
     icon: LayoutDashboard,
@@ -35,30 +37,59 @@ const menu = [
 ];
 
 function Sidebar() {
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
   return (
+
     <aside className="h-screen w-72 border-r border-slate-200 bg-white p-6">
-      <h1 className="mb-10 text-2xl font-bold text-blue-900">
+
+      <h1
+        onClick={() => navigate("/dashboard")}
+        className="mb-10 cursor-pointer text-2xl font-bold text-blue-900"
+      >
         SentinelAI
       </h1>
 
       <nav className="space-y-2">
+
         {menu.map((item) => {
+
           const Icon = item.icon;
 
+          const active = location.pathname === item.path;
+
           return (
+
             <button
               key={item.label}
-              className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left transition hover:bg-blue-50"
+              onClick={() => navigate(item.path)}
+              className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left font-medium transition
+
+              ${
+                active
+                  ? "bg-blue-900 text-white"
+                  : "text-slate-700 hover:bg-blue-50"
+              }`}
             >
+
               <Icon size={20} />
 
               {item.label}
+
             </button>
+
           );
+
         })}
+
       </nav>
+
     </aside>
+
   );
+
 }
 
 export default Sidebar;

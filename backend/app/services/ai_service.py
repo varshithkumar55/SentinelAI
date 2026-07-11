@@ -18,10 +18,28 @@ def analyze_scenario(data):
 
     text = response.text.strip()
 
+    # Remove Markdown code fences
     if text.startswith("```json"):
         text = text.replace("```json", "").replace("```", "").strip()
 
     elif text.startswith("```"):
         text = text.replace("```", "").strip()
 
-    return json.loads(text)
+    result = json.loads(text)
+
+    # ---------- Normalize confidence ----------
+    confidence = result.get("confidence", 0)
+
+    try:
+        confidence = float(confidence)
+
+        # Gemini sometimes returns 0.9 instead of 90
+        if confidence <= 1:
+            confidence *= 100
+
+        result["confidence"] = round(confidence)
+
+    except (ValueError, TypeError):
+        result["confidence"] = 0
+
+    return result

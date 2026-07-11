@@ -1,60 +1,66 @@
-import { useState } from "react";
-
 import StepIndicator from "./StepIndicator";
 
-function ScenarioWizard({ children }) {
-
-  const [step, setStep] = useState(0);
-
-  const pages = Array.isArray(children)
-    ? children
-    : [children];
-
+function ScenarioWizard({
+  currentStep,
+  totalSteps,
+  onNext,
+  onPrevious,
+  onSubmit,
+  loading,
+  children,
+}) {
   return (
+    <div className="space-y-8">
 
-    <div>
-
-      <StepIndicator currentStep={step} />
+      <StepIndicator
+        currentStep={currentStep}
+      />
 
       <div className="rounded-3xl bg-white p-8 shadow-sm">
 
-        {pages[step]}
+        {children}
 
       </div>
 
-      <div className="mt-8 flex justify-between">
+      <div className="flex items-center justify-between border-t pt-6">
 
         <button
-          disabled={step === 0}
-          onClick={() => setStep(step - 1)}
-          className="rounded-xl border px-6 py-3 disabled:opacity-40"
+          type="button"
+          onClick={onPrevious}
+          disabled={currentStep === 0 || loading}
+          className="rounded-xl border border-slate-300 px-6 py-3 font-semibold transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          Previous
+          ← Previous
         </button>
 
-        {step !== pages.length - 1 ? (
+        <div className="text-sm font-medium text-slate-500">
+          Step {currentStep + 1} of {totalSteps}
+        </div>
 
+        {currentStep === totalSteps - 1 ? (
           <button
-            onClick={() => setStep(step + 1)}
-            className="rounded-xl bg-blue-900 px-6 py-3 font-semibold text-white"
+            type="button"
+            onClick={onSubmit}
+            disabled={loading}
+            className="rounded-xl bg-blue-900 px-8 py-3 font-semibold text-white transition hover:bg-blue-800 disabled:opacity-60"
           >
-            Next
+            {loading
+              ? "Generating AI Strategy..."
+              : "Generate AI Strategy"}
           </button>
-
         ) : (
-
           <button
-            className="rounded-xl bg-green-700 px-6 py-3 font-semibold text-white"
+            type="button"
+            onClick={onNext}
+            className="rounded-xl bg-blue-900 px-8 py-3 font-semibold text-white transition hover:bg-blue-800"
           >
-            Analyze Scenario
+            Next →
           </button>
-
         )}
 
       </div>
 
     </div>
-
   );
 }
 

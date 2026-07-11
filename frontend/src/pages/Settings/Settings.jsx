@@ -1,0 +1,194 @@
+import DashboardLayout from "../../layouts/DashboardLayout";
+import { useState } from "react";
+import { clearMissions } from "../../services/storage/missionStorage";
+import toast from "react-hot-toast";
+function Settings() {
+
+  const [theme, setTheme] = useState("Light");
+
+  const [notifications, setNotifications] = useState(true);
+
+  function clearHistory() {
+
+    if (
+      window.confirm(
+        "Delete all mission history?"
+      )
+    ) {
+
+      clearMissions();
+      toast.success("Mission history cleared.");
+      
+
+    }
+
+  }
+
+  return (
+
+    <DashboardLayout>
+
+      <div className="space-y-8">
+
+        <div>
+
+          <h1 className="text-4xl font-bold">
+
+            Settings
+
+          </h1>
+
+          <p className="mt-2 text-slate-600">
+
+            Customize your SentinelAI experience.
+
+          </p>
+
+        </div>
+
+        {/* Appearance */}
+
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+
+          <h2 className="text-2xl font-bold">
+
+            🎨 Appearance
+
+          </h2>
+
+          <div className="mt-5">
+
+            <label className="block font-medium">
+
+              Theme
+
+            </label>
+
+            <select
+              value={theme}
+              onChange={(e) =>
+                setTheme(e.target.value)
+              }
+              className="mt-2 rounded-xl border p-3"
+            >
+
+              <option>Light</option>
+
+              <option>Dark</option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+        {/* AI */}
+
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+
+          <h2 className="text-2xl font-bold">
+
+            🤖 AI Configuration
+
+          </h2>
+
+          <div className="mt-5">
+
+            <p>
+
+              Model
+
+            </p>
+
+            <div className="mt-2 rounded-xl bg-slate-100 p-3">
+
+              Gemini 2.5 Flash
+
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* Notifications */}
+
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+
+          <h2 className="text-2xl font-bold">
+
+            🔔 Notifications
+
+          </h2>
+
+          <label className="mt-5 flex items-center gap-3">
+
+            <input
+              type="checkbox"
+              checked={notifications}
+              onChange={() =>
+                setNotifications(
+                  !notifications
+                )
+              }
+            />
+
+            Enable AI Notifications
+
+          </label>
+
+        </div>
+
+        {/* Storage */}
+
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+
+          <h2 className="text-2xl font-bold">
+
+            🗄 Storage
+
+          </h2>
+
+          <button
+            onClick={clearHistory}
+            className="mt-5 rounded-xl bg-red-600 px-5 py-3 text-white hover:bg-red-700"
+          >
+
+            Clear Mission History
+
+          </button>
+
+        </div>
+
+        {/* About */}
+
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+
+          <h2 className="text-2xl font-bold">
+
+            ℹ About
+
+          </h2>
+
+          <p className="mt-4 text-slate-600">
+
+            SentinelAI v1.0
+
+          </p>
+
+          <p className="text-slate-500">
+
+            React • FastAPI • Gemini AI
+
+          </p>
+
+        </div>
+
+      </div>
+
+    </DashboardLayout>
+
+  );
+
+}
+
+export default Settings;
