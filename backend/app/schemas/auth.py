@@ -34,15 +34,6 @@ class LoginRequest(BaseModel):
     remember_me: bool = False
 
 
-class TokenResponse(BaseModel):
-
-    access_token: str
-
-    refresh_token: str
-
-    token_type: str = "bearer"
-
-
 class UserResponse(BaseModel):
 
     id: str
@@ -54,3 +45,14 @@ class UserResponse(BaseModel):
     role: str
 
     email_verified: bool
+
+
+class TokenResponse(BaseModel):
+
+    access_token: str
+
+    refresh_token: str
+
+    token_type: str = "bearer"
+
+    user: UserResponse
