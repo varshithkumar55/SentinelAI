@@ -9,6 +9,8 @@ import Reports from "../pages/Reports/Reports";
 import History from "../pages/History/History";
 import Settings from "../pages/Settings/Settings";
 
+import ProtectedRoute from "./ProtectedRoute";
+
 function AppRoutes() {
   return (
     <Routes>
@@ -17,17 +19,59 @@ function AppRoutes() {
 
       <Route path="/login" element={<Login />} />
 
-      <Route path="/dashboard" element={<Dashboard />} />
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
 
-      <Route path="/scenario" element={<ScenarioBuilder />} />
+      <Route
+        path="/scenario"
+        element={
+          <ProtectedRoute>
+            <ScenarioBuilder />
+          </ProtectedRoute>
+        }
+      />
 
-      <Route path="/results" element={<Results />} />
+      <Route
+        path="/results"
+        element={
+          <ProtectedRoute>
+            <Results />
+          </ProtectedRoute>
+        }
+      />
 
-      <Route path="/reports" element={<Reports />} />
+      <Route
+        path="/reports"
+        element={
+          <ProtectedRoute>
+            <Reports />
+          </ProtectedRoute>
+        }
+      />
 
-      <Route path="/history" element={<History />} />
+      <Route
+        path="/history"
+        element={
+          <ProtectedRoute>
+            <History />
+          </ProtectedRoute>
+        }
+      />
 
-      <Route path="/settings" element={<Settings />} />
+      <Route
+        path="/settings"
+        element={
+          <ProtectedRoute>
+            <Settings />
+          </ProtectedRoute>
+        }
+      />
 
     </Routes>
   );
