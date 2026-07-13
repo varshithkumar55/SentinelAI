@@ -1,10 +1,22 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import ThemeToggle from "../theme/ThemeToggle";
+import NotificationBell from "../notifications/NotificationBell";
+import ProfileDropdown from "../profile/ProfileDropdown";
+function Topbar() {
 
-const pageInfo = {
+  const location = useLocation();
+
+  const navigate = useNavigate();
+
+  const { user, logout } = useAuth();
+  const pageInfo = {
   "/dashboard": {
-    title: "Dashboard",
-    subtitle: "Welcome back to SentinelAI",
-  },
+  title: "Dashboard",
+  subtitle: user
+    ? `Welcome back, ${user.full_name.split(" ")[0]}!`
+    : "Welcome back!",
+},
 
   "/scenario": {
     title: "Scenario Builder",
@@ -30,42 +42,58 @@ const pageInfo = {
     title: "Settings",
     subtitle: "Manage SentinelAI preferences.",
   },
+  "/analytics": {
+    title: "Analytics",
+    subtitle: "Mission intelligence and AI insights.",
+  },
+  "/change-password": {
+  title: "Change Password",
+  subtitle: "Update your SentinelAI account password.",
+  },
 };
-
-function Topbar() {
-
-  const location = useLocation();
-
   const current =
     pageInfo[location.pathname] || {
       title: "SentinelAI",
       subtitle: "Decision Intelligence Platform",
     };
 
+  const initials = user
+    ? user.full_name
+        .split(" ")
+        .map((name) => name[0])
+        .join("")
+        .substring(0, 2)
+        .toUpperCase()
+    : "??";
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
   return (
-    <header className="flex h-20 items-center justify-between border-b border-slate-200 bg-white px-8">
+    <header className="flex h-20 items-center justify-between border-b border-app bg-surface px-8">
 
       <div>
 
-        <h2 className="text-2xl font-bold">
+        <h2 className="text-2xl font-bold text-primary">
           {current.title}
         </h2>
 
-        <p className="text-slate-500">
+        <p className="text-secondary">
           {current.subtitle}
         </p>
 
       </div>
 
       <div className="flex items-center gap-4">
-
+        <NotificationBell />
+        <ThemeToggle />
         <div className="rounded-full bg-green-100 px-4 py-2 text-green-700">
           🟢 AI Online
         </div>
 
-        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-blue-900 text-white font-semibold">
-          VK
-        </div>
+        <ProfileDropdown />
 
       </div>
 

@@ -29,43 +29,50 @@ function DashboardStats() {
       (m) => m.risk_level === "Critical"
     ).length;
 
-  const stats = [
-    {
-      title: "Active Missions",
-      value: total,
-      color: "bg-blue-100",
-      text: "text-blue-700",
-      icon: "🛰️",
-    },
-    {
-      title: "Completed Reports",
-      value: total,
-      color: "bg-green-100",
-      text: "text-green-700",
-      icon: "📄",
-    },
-    {
-      title: "AI Confidence",
-      value: `${avgConfidence}%`,
-      color: "bg-purple-100",
-      text: "text-purple-700",
-      icon: "🤖",
-    },
-    {
-      title: "Critical Alerts",
-      value: critical,
-      color: "bg-red-100",
-      text: "text-red-700",
-      icon: "⚠️",
-    },
-  ];
+  const highRisk =
+  missions.filter(
+    (m) =>
+      m.risk_level === "High" ||
+      m.risk_level === "Critical"
+  ).length;
+
+const stats = [
+  {
+    title: "Missions Analysed",
+    value: total,
+    color: "bg-blue-100",
+    text: "text-blue-700",
+    icon: "🛰️",
+  },
+  {
+    title: "Reports Generated",
+    value: total,
+    color: "bg-green-100",
+    text: "text-green-700",
+    icon: "📄",
+  },
+  {
+    title: "Average AI Confidence",
+    value: `${avgConfidence}%`,
+    color: "bg-purple-100",
+    text: "text-purple-700",
+    icon: "🎯",
+  },
+  {
+    title: "High-Risk Missions",
+    value: highRisk,
+    color: "bg-red-100",
+    text: "text-red-700",
+    icon: "⚠️",
+  },
+];
 
   return (
     <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
       {stats.map((item) => (
         <div
           key={item.title}
-          className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-lg"
+          className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm transition hover:shadow-lg"
         >
           <div
             className={`inline-flex h-14 w-14 items-center justify-center rounded-xl text-2xl ${item.color}`}

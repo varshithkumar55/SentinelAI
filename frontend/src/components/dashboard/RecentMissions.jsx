@@ -1,5 +1,5 @@
 import { getMissions } from "../../services/storage/missionStorage";
-
+import { formatDateTime } from "../../utils/dateFormatter";
 function badgeColor(level) {
   switch (level) {
     case "Critical":
@@ -22,7 +22,7 @@ function RecentMissions() {
 
   return (
 
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm">
 
       <h2 className="mb-5 text-xl font-bold">
 
@@ -65,7 +65,7 @@ function RecentMissions() {
 
               <p className="text-xs text-slate-400 mt-1">
 
-                {mission.submittedAt}
+                {formatDateTime(mission.createdAt)}
 
               </p>
 

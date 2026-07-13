@@ -1,8 +1,7 @@
 from datetime import datetime
 from datetime import timedelta
 from datetime import timezone
-
-from jose import jwt
+from jose import JWTError, jwt
 from passlib.context import CryptContext
 
 from app.core.config import (
@@ -77,3 +76,17 @@ def create_refresh_token(
         JWT_SECRET_KEY,
         algorithm=JWT_ALGORITHM,
     )
+def decode_token(token: str):
+
+    try:
+
+        payload = jwt.decode(
+            token,
+            JWT_SECRET_KEY,
+            algorithms=[JWT_ALGORITHM],
+        )
+
+        return payload
+
+    except JWTError:
+        return None

@@ -8,9 +8,10 @@ import Results from "../pages/Results/Results";
 import Reports from "../pages/Reports/Reports";
 import History from "../pages/History/History";
 import Settings from "../pages/Settings/Settings";
-
 import ProtectedRoute from "./ProtectedRoute";
-
+import Analytics from "../pages/Analytics/Analytics";
+import Profile from "../pages/Profile/Profile";
+import ChangePassword from "../pages/ChangePassword/ChangePassword";
 function AppRoutes() {
   return (
     <Routes>
@@ -72,7 +73,31 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/analytics"
+        element={
+            <ProtectedRoute>
+                <Analytics />
+        </ProtectedRoute>
+        }
+      />
 
+      <Route
+      path="/profile"
+      element={
+        <ProtectedRoute>
+            <Profile />
+        </ProtectedRoute>
+        }
+      />
+      <Route
+    path="/change-password"
+    element={
+        <ProtectedRoute>
+            <ChangePassword />
+        </ProtectedRoute>
+    }
+      />
     </Routes>
   );
 }

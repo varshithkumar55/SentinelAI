@@ -5,7 +5,7 @@ function Card({ children, className = "" }) {
         rounded-2xl
         border
         border-slate-200
-        bg-white
+        bg-surface
         p-6
         shadow-sm
         transition-all

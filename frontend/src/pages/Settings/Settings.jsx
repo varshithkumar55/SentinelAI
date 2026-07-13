@@ -1,10 +1,11 @@
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { useState } from "react";
+import { useTheme } from "../../context/ThemeContext";
 import { clearMissions } from "../../services/storage/missionStorage";
 import toast from "react-hot-toast";
 function Settings() {
 
-  const [theme, setTheme] = useState("Light");
+  const { theme, setTheme } = useTheme();
 
   const [notifications, setNotifications] = useState(true);
 
@@ -38,7 +39,7 @@ function Settings() {
 
           </h1>
 
-          <p className="mt-2 text-slate-600">
+          <p className="mt-2 text-secondary">
 
             Customize your SentinelAI experience.
 
@@ -48,7 +49,7 @@ function Settings() {
 
         {/* Appearance */}
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm">
 
           <h2 className="text-2xl font-bold">
 
@@ -66,16 +67,14 @@ function Settings() {
 
             <select
               value={theme}
-              onChange={(e) =>
-                setTheme(e.target.value)
-              }
-              className="mt-2 rounded-xl border p-3"
-            >
+              onChange={(e) => setTheme(e.target.value)}
+              className="mt-2 rounded-xl border border-app bg-surface p-3 text-primary"
+              >
+              <option value="light">☀️ Light</option>
 
-              <option>Light</option>
+              <option value="dark">🌙 Dark</option>
 
-              <option>Dark</option>
-
+              <option value="system">💻 System</option>
             </select>
 
           </div>
@@ -84,7 +83,7 @@ function Settings() {
 
         {/* AI */}
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm">
 
           <h2 className="text-2xl font-bold">
 
@@ -112,7 +111,7 @@ function Settings() {
 
         {/* Notifications */}
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm">
 
           <h2 className="text-2xl font-bold">
 
@@ -140,7 +139,7 @@ function Settings() {
 
         {/* Storage */}
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm">
 
           <h2 className="text-2xl font-bold">
 
@@ -161,7 +160,7 @@ function Settings() {
 
         {/* About */}
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm">
 
           <h2 className="text-2xl font-bold">
 

@@ -1,6 +1,6 @@
 function About() {
   return (
-    <section className="bg-white py-24">
+    <section className="bg-surface py-24">
       <div className="mx-auto max-w-7xl px-6">
 
         <div className="mb-12 text-center">

@@ -90,7 +90,7 @@ function Login() {
 
     <div className="flex min-h-screen items-center justify-center bg-slate-100">
 
-      <div className="w-full max-w-md rounded-3xl bg-white p-10 shadow-lg">
+      <div className="w-full max-w-md rounded-3xl bg-surface p-10 shadow-lg">
 
         <div className="mb-8 flex flex-col items-center">
 

@@ -1,5 +1,5 @@
 import { getMissions } from "../../services/storage/missionStorage";
-
+import { formatDateTime } from "../../utils/dateFormatter";
 function LatestRecommendation() {
 
   const missions = getMissions();
@@ -8,7 +8,7 @@ function LatestRecommendation() {
 
   return (
 
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm">
 
       <h2 className="text-xl font-bold">
 
@@ -28,7 +28,7 @@ function LatestRecommendation() {
 
           <p className="mt-6 text-sm text-slate-400">
 
-            {latest.submittedAt}
+            {formatDateTime(latest.createdAt)}
 
           </p>
 

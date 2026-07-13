@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 
 import { useNavigate, useLocation } from "react-router-dom";
-
+import { BarChart3 } from "lucide-react";
 const menu = [
   {
     icon: LayoutDashboard,
@@ -18,6 +18,11 @@ const menu = [
     icon: ClipboardList,
     label: "Scenario Builder",
     path: "/scenario",
+  },
+  {
+    icon: BarChart3,
+    label: "Analytics",
+    path: "/analytics",
   },
   {
     icon: FileText,
@@ -43,7 +48,7 @@ function Sidebar() {
 
   return (
 
-    <aside className="h-screen w-72 border-r border-slate-200 bg-white p-6">
+    <aside className="h-screen w-72 border-r border-app bg-surface p-6">
 
       <h1
         onClick={() => navigate("/dashboard")}
@@ -70,7 +75,7 @@ function Sidebar() {
               ${
                 active
                   ? "bg-blue-900 text-white"
-                  : "text-slate-700 hover:bg-blue-50"
+                  : "text-primary hover:bg-blue-50"
               }`}
             >
 

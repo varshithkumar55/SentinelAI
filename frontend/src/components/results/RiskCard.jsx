@@ -2,7 +2,7 @@ function RiskCard({ data }) {
   return (
     <div className="grid gap-6 md:grid-cols-3">
 
-      <div className="rounded-xl bg-white p-6 shadow">
+      <div className="rounded-xl bg-surface p-6 shadow">
 
         <p className="text-slate-500">
           Risk Level
@@ -14,7 +14,7 @@ function RiskCard({ data }) {
 
       </div>
 
-      <div className="rounded-xl bg-white p-6 shadow">
+      <div className="rounded-xl bg-surface p-6 shadow">
 
         <p className="text-slate-500">
           AI Confidence
@@ -26,7 +26,7 @@ function RiskCard({ data }) {
 
       </div>
 
-      <div className="rounded-xl bg-white p-6 shadow">
+      <div className="rounded-xl bg-surface p-6 shadow">
 
         <p className="text-slate-500">
           Recommended Strategy

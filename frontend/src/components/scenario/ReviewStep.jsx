@@ -2,7 +2,7 @@ function Card({ title, value }) {
 
   return (
 
-    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div className="rounded-2xl border border-slate-200 bg-surface p-5 shadow-sm">
 
       <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
         {title}

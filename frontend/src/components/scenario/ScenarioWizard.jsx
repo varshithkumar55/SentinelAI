@@ -16,7 +16,7 @@ function ScenarioWizard({
         currentStep={currentStep}
       />
 
-      <div className="rounded-3xl bg-white p-8 shadow-sm">
+      <div className="rounded-3xl bg-surface p-8 shadow-sm">
 
         {children}
 

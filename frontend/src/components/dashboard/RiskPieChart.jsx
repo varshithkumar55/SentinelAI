@@ -36,7 +36,7 @@ function RiskPieChart() {
   ].filter(item => item.value > 0);
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm">
 
       <h2 className="mb-6 text-xl font-bold">
         Risk Distribution

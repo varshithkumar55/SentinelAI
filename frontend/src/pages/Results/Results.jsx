@@ -20,7 +20,7 @@ function Results() {
   if (!state) {
     return (
       <DashboardLayout>
-        <div className="rounded-3xl bg-white p-10 shadow">
+        <div className="rounded-3xl bg-surface p-10 shadow">
           <h2 className="text-3xl font-bold">
             No Analysis Found
           </h2>

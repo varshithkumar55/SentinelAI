@@ -5,8 +5,10 @@ import { Toaster } from "react-hot-toast";
 import App from "./App";
 import "./styles/globals.css";
 import { AuthProvider } from "./context/AuthContext";
+import { ThemeProvider } from "./context/ThemeContext";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
+    <ThemeProvider>
     <BrowserRouter>
 
       <Toaster
@@ -23,5 +25,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       </AuthProvider>
 
     </BrowserRouter>
+    </ThemeProvider>
   </React.StrictMode>
 );

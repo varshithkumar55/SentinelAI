@@ -1,19 +1,35 @@
 import { ArrowRight, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
+import { getMissions } from "../../services/storage/missionStorage";
 import { Button } from "../ui";
 import DashboardPreview from "../dashboard/DashboardPreview";
 
 function Hero() {
 
   const navigate = useNavigate();
+  const missions = getMissions();
 
+const latestMission = missions[0];
+
+const totalMissions = missions.length;
+
+const averageConfidence =
+  totalMissions === 0
+    ? 0
+    : Math.round(
+        missions.reduce((sum, mission) => {
+          let confidence = Number(mission.confidence) || 0;
+
+          if (confidence <= 1) {
+            confidence *= 100;
+          }
+
+          return sum + confidence;
+        }, 0) / totalMissions
+      );
   const scrollToFeatures = () => {
-  console.log("Explore Features clicked");
 
   const section = document.getElementById("features");
-
-  console.log(section);
 
   if (section) {
     section.scrollIntoView({
@@ -87,7 +103,6 @@ function Hero() {
 
   <Button
   onClick={() => {
-    console.log("Navigating...");
     navigate("/login");
   }}
 >
@@ -109,19 +124,19 @@ function Hero() {
           <div className="mt-14 grid grid-cols-3 gap-6">
 
             <Metric
-              value="50+"
-              label="Planning Variables"
-            />
+  value={totalMissions}
+  label="Missions Analysed"
+/>
 
-            <Metric
-              value="95%"
-              label="AI Confidence"
-            />
+<Metric
+  value={`${averageConfidence}%`}
+  label="Average AI Confidence"
+/>
 
-            <Metric
-              value="<10s"
-              label="Analysis Time"
-            />
+<Metric
+  value={totalMissions}
+  label="Reports Generated"
+/>
 
           </div>
 
@@ -140,7 +155,7 @@ function Metric({ value, label }) {
 
   return (
 
-    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div className="rounded-2xl border border-slate-200 bg-surface p-5 shadow-sm">
 
       <h3 className="text-3xl font-bold text-slate-900">
 

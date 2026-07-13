@@ -69,7 +69,29 @@ export function AuthProvider({ children }) {
     setUser(null);
 
   };
+  function updateUser(updatedUser) {
 
+    setUser(updatedUser);
+
+    if (localStorage.getItem("token")) {
+
+      localStorage.setItem(
+      "user",
+      JSON.stringify(updatedUser)
+      );
+
+    }
+
+    if (sessionStorage.getItem("token")) {
+
+      sessionStorage.setItem(
+      "user",
+      JSON.stringify(updatedUser)
+      );
+
+    }
+
+  }
   return (
 
     <AuthContext.Provider
@@ -79,6 +101,7 @@ export function AuthProvider({ children }) {
         loading,
         login,
         logout,
+        updateUser,
         isAuthenticated: !!token,
       }}
     >

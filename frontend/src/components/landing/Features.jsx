@@ -72,7 +72,7 @@ function Features() {
             return (
               <div
                 key={feature.title}
-                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+                className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
               >
                 <div className="mb-5 inline-flex rounded-xl bg-blue-100 p-3 text-blue-900">
                   <Icon size={28} />

@@ -1,5 +1,5 @@
 import { getMissions } from "../../services/storage/missionStorage";
-
+import { formatDateTime } from "../../utils/dateFormatter";
 function ActivityFeed() {
 
   const missions = getMissions();
@@ -9,25 +9,25 @@ function ActivityFeed() {
       id: `${mission.id}-analysis`,
       icon: "🟢",
       title: `${mission.scenario} analyzed`,
-      time: mission.submittedAt,
+      time: mission.createdAt,
     },
     {
       id: `${mission.id}-report`,
       icon: "📄",
       title: `Report generated`,
-      time: mission.submittedAt,
+      time: mission.createdAt,
     },
     {
       id: `${mission.id}-strategy`,
       icon: "🤖",
       title: `AI strategy generated`,
-      time: mission.submittedAt,
+      time: mission.createdAt,
     },
   ]);
 
   return (
 
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm">
 
       <h2 className="mb-6 text-xl font-bold">
 
@@ -70,7 +70,7 @@ function ActivityFeed() {
 
                 <p className="text-sm text-slate-500">
 
-                  {activity.time}
+                  {formatDateTime(activity.time)}
 
                 </p>
 

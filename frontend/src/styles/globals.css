@@ -1,28 +1,98 @@
 @import "tailwindcss";
 
-/* ===========================
-   SentinelAI Design Tokens
-=========================== */
+/* ==========================================
+   SentinelAI Design System
+========================================== */
 
-:root{
+:root {
+
   --primary:#1E3A8A;
   --secondary:#0F172A;
   --accent:#14B8A6;
+
   --success:#22C55E;
   --warning:#F59E0B;
   --danger:#EF4444;
+
   --background:#F8FAFC;
   --surface:#FFFFFF;
+
+  --text:#111827;
+  --text-secondary:#475569;
+
+  --border:#E2E8F0;
+
 }
+
+/* ==========================================
+   Dark Theme
+========================================== */
+
+.dark{
+
+  --background:#020817;
+  --surface:#0F172A;
+
+  --text:#F8FAFC;
+  --text-secondary:#CBD5E1;
+
+  --border:#1E293B;
+
+}
+
+/* ==========================================
+   Global Styles
+========================================== */
 
 html{
   scroll-behavior:smooth;
 }
 
 body{
+
   margin:0;
   padding:0;
+
   background:var(--background);
-  color:#111827;
+  color:var(--text);
+
   font-family:Inter,system-ui,sans-serif;
+
+  transition:
+    background .25s ease,
+    color .25s ease;
+
+}
+
+*{
+
+  transition:
+    background-color .2s ease,
+    color .2s ease,
+    border-color .2s ease;
+
+}
+
+/* ==========================================
+   Reusable Utility Classes
+========================================== */
+
+.bg-app{
+  background:var(--background);
+}
+
+.bg-surface{
+  background:var(--surface);
+}
+
+.text-primary{
+  color:var(--text);
+}
+
+.text-secondary{
+  color:var(--text-secondary);
+}
+
+.border-app{
+  border-color:var(--border);
 }

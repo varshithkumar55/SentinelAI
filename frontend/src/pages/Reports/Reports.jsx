@@ -4,7 +4,7 @@ import { Eye, FileDown } from "lucide-react";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { getMissions } from "../../services/storage/missionStorage";
 import { exportMissionPDF } from "../../utils/pdfGenerator";
-
+import { formatDateTime } from "../../utils/dateFormatter";
 function badgeColor(level) {
   switch (level) {
     case "Critical":
@@ -43,12 +43,11 @@ function Reports() {
 
     return matchesSearch && matchesRisk;
   });
-
   return (
     <DashboardLayout>
       <div className="space-y-8">
 
-        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-surface shadow-sm">
 
           {/* Toolbar */}
 
@@ -155,7 +154,7 @@ function Reports() {
                     </td>
 
                     <td className="p-5">
-                      {mission.submittedAt}
+                      {formatDateTime(mission.createdAt)}
                     </td>
 
                     <td className="p-5">

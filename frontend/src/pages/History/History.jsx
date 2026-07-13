@@ -39,7 +39,7 @@ function History() {
 
           {missions.length === 0 ? (
 
-            <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center">
+            <div className="rounded-2xl border border-dashed border-slate-300 bg-surface p-12 text-center">
 
               <h3 className="text-xl font-semibold">
 
@@ -61,7 +61,7 @@ function History() {
 
               <div
                 key={mission.id}
-                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-md cursor-pointer"
+                className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm transition hover:shadow-md cursor-pointer"
                 onClick={() =>
                   navigate("/results", {
                     state: mission,

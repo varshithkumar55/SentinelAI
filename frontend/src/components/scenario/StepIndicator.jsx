@@ -31,7 +31,7 @@ function StepIndicator({ currentStep }) {
                     ? "border-green-600 bg-green-600 text-white"
                     : active
                     ? "border-blue-900 bg-blue-900 text-white"
-                    : "border-slate-300 bg-white text-slate-500"
+                    : "border-slate-300 bg-surface text-slate-500"
                 }`}
               >
 

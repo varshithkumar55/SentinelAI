@@ -16,7 +16,7 @@ function ConfidenceChart({ confidence }) {
   ];
 
   return (
-    <div className="rounded-2xl bg-white p-6 shadow-sm">
+    <div className="rounded-2xl bg-surface p-6 shadow-sm">
 
       <h2 className="mb-6 text-2xl font-bold">
         AI Confidence

@@ -17,30 +17,37 @@ function MissionTrendChart() {
   // Count missions by date
   const grouped = {};
 
-  missions.forEach((mission) => {
+missions.forEach((mission) => {
 
-    const date = new Date(mission.createdAt).toLocaleDateString(
-      "en-IN",
+  const key = mission.createdAt.split("T")[0];
+
+  if (!grouped[key]) {
+    grouped[key] = 0;
+  }
+
+  grouped[key]++;
+
+});
+
+const trendData = Object.keys(grouped)
+  .sort()
+  .map((date) => ({
+
+    day: new Date(date).toLocaleDateString(
+      "en-GB",
       {
         day: "2-digit",
         month: "short",
       }
-    );
+    ),
 
-    grouped[date] = (grouped[date] || 0) + 1;
+    missions: grouped[date],
 
-  });
-
-  const trendData = Object.entries(grouped).map(
-    ([day, missions]) => ({
-      day,
-      missions,
-    })
-  );
+  }));
 
   return (
 
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm">
 
       <h2 className="mb-6 text-xl font-bold">
 

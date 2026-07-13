@@ -46,6 +46,12 @@ class UserResponse(BaseModel):
 
     email_verified: bool
 
+    phone: str | None = None
+
+    organization: str | None = None
+
+    bio: str | None = None
+
 
 class TokenResponse(BaseModel):
 

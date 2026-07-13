@@ -70,12 +70,15 @@ def login(
             access_token=result["access_token"],
             refresh_token=result["refresh_token"],
             user=UserResponse(
-                id=str(user.id),
-                full_name=user.full_name,
-                email=user.email,
-                role=user.role.value,
-                email_verified=user.email_verified,
-            ),
+    id=str(user.id),
+    full_name=user.full_name,
+    email=user.email,
+    role=user.role.value,
+    email_verified=user.email_verified,
+    phone=user.phone,
+    organization=user.organization,
+    bio=user.bio,
+)
         )
 
     except ValueError as e:

@@ -63,7 +63,20 @@ class User(BaseModel):
         String(500),
         nullable=True,
     )
+    phone: Mapped[str | None] = mapped_column(
+    String(20),
+    nullable=True,
+    )
 
+    organization: Mapped[str | None] = mapped_column(
+    String(255),
+    nullable=True,
+    )
+
+    bio: Mapped[str | None] = mapped_column(
+    String(1000),
+    nullable=True,
+    )
     last_login: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True),
         nullable=True,

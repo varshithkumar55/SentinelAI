@@ -3,7 +3,7 @@ import Topbar from "../components/topbar/Topbar";
 
 function DashboardLayout({ children }) {
   return (
-    <div className="flex min-h-screen bg-slate-100">
+    <div className="flex min-h-screen bg-app">
       <Sidebar />
 
       <div className="flex flex-1 flex-col">

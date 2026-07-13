@@ -1,8 +1,69 @@
-import { dashboardData } from "../../utils/dashboardData";
+import { getMissions } from "../../services/storage/missionStorage";
 
 function DashboardPreview() {
+  const missions = getMissions();
+const latestMission = missions[0];
+
+
+  const dashboardData = latestMission
+  ? {
+      scenario: latestMission.scenario,
+
+      status: "AI Engine Active",
+
+      progress: Math.round(
+        Number(latestMission.confidence) <= 1
+          ? Number(latestMission.confidence) * 100
+          : Number(latestMission.confidence)
+      ),
+
+      risk: latestMission.risk_level,
+
+      confidence: Math.round(
+        Number(latestMission.confidence) <= 1
+          ? Number(latestMission.confidence) * 100
+          : Number(latestMission.confidence)
+      ),
+
+      resources: 84,
+
+      eta: "Ready",
+
+      recommendation:
+        latestMission.recommendation ||
+        "AI recommendation available.",
+
+      activity: [
+        "Scenario Created",
+        "Constraints Analysed",
+        "Risks Evaluated",
+        "Decision Report Generated",
+      ],
+    }
+  : {
+      scenario: "No Mission Yet",
+
+      status: "Ready",
+
+      progress: 0,
+
+      risk: "-",
+
+      confidence: 0,
+
+      resources: 0,
+
+      eta: "-",
+
+      recommendation:
+        "Create your first mission.",
+
+      activity: [
+        "No activity yet",
+      ],
+    };
   return (
-    <div className="w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
+    <div className="w-full max-w-lg rounded-3xl border border-slate-200 bg-surface p-6 shadow-xl">
 
       <div className="mb-6 flex items-center justify-between">
 
