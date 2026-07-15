@@ -1,3 +1,6 @@
+import os
+import uuid
+from fastapi import HTTPException, UploadFile
 from sqlalchemy.orm import Session
 from app.core.security import (
     hash_password,
@@ -64,6 +67,68 @@ def change_password(
 
     user.password_hash = hash_password(
         password_data.new_password
+    )
+
+    db.commit()
+
+    db.refresh(user)
+
+    return user
+def upload_avatar(
+    db: Session,
+    user: User,
+    file: UploadFile,
+):
+
+    allowed_extensions = {
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".webp",
+    }
+
+    extension = os.path.splitext(
+        file.filename
+    )[1].lower()
+
+    if extension not in allowed_extensions:
+
+        raise ValueError(
+            "Only JPG, JPEG, PNG and WEBP images are allowed."
+        )
+
+    file.file.seek(0, os.SEEK_END)
+    size = file.file.tell()
+    file.file.seek(0)
+
+    if size > 5 * 1024 * 1024:
+
+        raise ValueError(
+            "Image size must not exceed 5 MB."
+        )
+
+    filename = (
+        f"{uuid.uuid4()}{extension}"
+    )
+
+    upload_dir = "uploads/avatars"
+
+    os.makedirs(
+        upload_dir,
+        exist_ok=True,
+    )
+
+    file_path = os.path.join(
+        upload_dir,
+        filename,
+    )
+
+    with open(file_path, "wb") as buffer:
+
+        buffer.write(file.file.read())
+
+    user.profile_image = (
+        f"/uploads/avatars/{filename}"
     )
 
     db.commit()

@@ -24,6 +24,7 @@ def upgrade() -> None:
     op.add_column('users', sa.Column('phone', sa.String(length=20), nullable=True))
     op.add_column('users', sa.Column('organization', sa.String(length=255), nullable=True))
     op.add_column('users', sa.Column('bio', sa.String(length=1000), nullable=True))
+    op.add_column("users",sa.Column("profile_image",sa.String(length=500),nullable=True,),)
     # ### end Alembic commands ###
 
 
@@ -33,4 +34,5 @@ def downgrade() -> None:
     op.drop_column('users', 'bio')
     op.drop_column('users', 'organization')
     op.drop_column('users', 'phone')
+    op.drop_column("users", "profile_image")
     # ### end Alembic commands ###

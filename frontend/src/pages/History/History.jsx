@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router-dom";
-
+import { useEffect, useState } from "react";
 import DashboardLayout from "../../layouts/DashboardLayout";
-import { getMissions } from "../../services/storage/missionStorage";
-
+import { getAllMissions } from "../../services/missionService";
 function badgeColor(level) {
 
   switch (level) {
@@ -26,8 +25,30 @@ function badgeColor(level) {
 function History() {
 
   const navigate = useNavigate();
+  useEffect(() => {
 
-  const missions = getMissions();
+    async function loadMissions() {
+
+      try {
+
+        const data = await getAllMissions();
+
+        setMissions(data);
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+      }
+
+    }
+
+    loadMissions();
+
+  }, []);
+  const [missions, setMissions] = useState([]);
 
   return (
 
@@ -64,8 +85,11 @@ function History() {
                 className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm transition hover:shadow-md cursor-pointer"
                 onClick={() =>
                   navigate("/results", {
-                    state: mission,
-                  })
+                    state: {
+                    ...mission,
+                    summary: mission.ai_response,
+                },
+              })
                 }
               >
 
@@ -75,21 +99,21 @@ function History() {
 
                     <h2 className="text-xl font-bold">
 
-                      {mission.scenario}
+                      {mission.title}
 
                     </h2>
 
                     <p className="mt-1 text-slate-500">
 
-                      {mission.mission}
+                      {mission.mission_type}
 
                     </p>
 
                     <p className="mt-3 text-sm text-slate-400">
 
-                      {mission.submittedAt}
+                      {new Date(mission.created_at).toLocaleString()}
 
-                    </p>
+                  </p>
 
                   </div>
 

@@ -9,7 +9,7 @@ import ConstraintStep from "./ConstraintStep";
 import ReviewStep from "./ReviewStep";
 
 import { analyzeScenario } from "../../services/api/scenarioApi";
-import { saveMission } from "../../services/storage/missionStorage";
+import { createMission } from "../../services/missionService";
 function ScenarioForm() {
 
   const navigate = useNavigate();
@@ -115,17 +115,31 @@ function ScenarioForm() {
 
       const result = await analyzeScenario(formData);
 
-      saveMission({
-        ...result,
+      await createMission({
 
-        scenario: formData.scenario,
-        mission: formData.mission,
-        missionType: formData.missionType,
-        environment: formData.environment,
-        priority: formData.priority,
+      title: formData.mission,
 
-        submittedAt: new Date().toLocaleString(),
-      });
+      mission_type: formData.missionType,
+
+      scenario: formData.scenario,
+
+      ai_response:
+        result.summary ||
+        result.executive_summary ||
+        "AI Analysis Completed",
+
+      recommendation:
+        result.recommended_strategy || "",
+
+      confidence:
+        Number(result.confidence) || 0,
+
+      risk_level:
+        result.risk_level || "Low",
+
+      status: "Completed",
+
+    });
 
       navigate("/results", {
         state: result,

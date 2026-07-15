@@ -3,7 +3,13 @@ import DashboardLayout from "../../layouts/DashboardLayout";
 import { useAuth } from "../../context/AuthContext";
 import { getMissions } from "../../services/storage/missionStorage";
 import toast from "react-hot-toast";
-import { getProfile, updateProfile } from "../../services/profileService";
+
+import {
+  getProfile,
+  updateProfile,
+  uploadAvatar,
+} from "../../services/profileService";
+
 function Profile() {
 
   const { user, updateUser } = useAuth();
@@ -20,17 +26,23 @@ function Profile() {
             if (c <= 1) c *= 100;
 
             return sum + c;
+
           }, 0) / missions.length
         );
 
   const [form, setForm] = useState({
+
     first_name: user?.full_name?.split(" ")[0] || "",
     last_name: user?.full_name?.split(" ").slice(1).join(" ") || "",
     email: user?.email || "",
     phone: "",
-    organization: "DRDO Research Candidate",
+    organization: "",
     bio: "",
+
   });
+
+  const [avatar, setAvatar] = useState(null);
+
   useEffect(() => {
 
     async function loadProfile() {
@@ -40,15 +52,28 @@ function Profile() {
         const profile = await getProfile();
 
         setForm({
+
           first_name: profile.first_name,
           last_name: profile.last_name,
           email: profile.email,
           phone: profile.phone || "",
           organization: profile.organization || "",
           bio: profile.bio || "",
+
         });
 
-      } catch (error) {
+        setAvatar(profile.profile_image);
+        updateUser({
+        ...user,
+        full_name: `${profile.first_name} ${profile.last_name}`,
+        email: profile.email,
+        role: profile.role,
+        profile_image: profile.profile_image,
+      });
+
+      }
+
+      catch (error) {
 
         console.error(error);
 
@@ -61,11 +86,16 @@ function Profile() {
     loadProfile();
 
   }, []);
+
   function handleChange(e) {
+
     setForm({
+
       ...form,
       [e.target.name]: e.target.value,
+
     });
+
   }
 
   async function handleSave() {
@@ -73,29 +103,42 @@ function Profile() {
     try {
 
       const updatedProfile = await updateProfile({
-      first_name: form.first_name,
-      last_name: form.last_name,
-      phone: form.phone,
-      organization: form.organization,
-      bio: form.bio,
+
+        first_name: form.first_name,
+        last_name: form.last_name,
+        phone: form.phone,
+        organization: form.organization,
+        bio: form.bio,
+
       });
 
       setForm({
-      first_name: updatedProfile.first_name,
-      last_name: updatedProfile.last_name,
-      email: updatedProfile.email,
-      phone: updatedProfile.phone || "",
-      organization: updatedProfile.organization || "",
-      bio: updatedProfile.bio || "",
-      });
-      updateUser({
-        ...user,
-        full_name: `${updatedProfile.first_name} ${updatedProfile.last_name}`,
+
+        first_name: updatedProfile.first_name,
+        last_name: updatedProfile.last_name,
         email: updatedProfile.email,
+        phone: updatedProfile.phone || "",
+        organization: updatedProfile.organization || "",
+        bio: updatedProfile.bio || "",
+
       });
+
+      updateUser({
+
+        ...user,
+
+        full_name:
+          `${updatedProfile.first_name} ${updatedProfile.last_name}`,
+
+        email: updatedProfile.email,
+
+      });
+
       toast.success("Profile updated successfully.");
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
       console.error(error);
 
@@ -103,7 +146,36 @@ function Profile() {
 
     }
 
-}
+  }
+
+  async function handleAvatarChange(e) {
+
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    try {
+
+      const result = await uploadAvatar(file);
+
+      setAvatar(result.profile_image);
+      updateUser({
+      ...user,
+      profile_image: result.profile_image,
+    });
+      toast.success("Profile picture updated.");
+
+    }
+
+    catch (error) {
+
+      console.error(error);
+
+      toast.error("Failed to upload image.");
+
+    }
+
+  }
 
   return (
 
@@ -131,26 +203,59 @@ function Profile() {
 
             <div className="flex flex-col items-center">
 
-              <div className="flex h-28 w-28 items-center justify-center rounded-full bg-blue-900 text-4xl font-bold text-white">
+              <label className="cursor-pointer">
 
-                {user?.full_name
-                  ?.split(" ")
-                  .map(n => n[0])
-                  .join("")
-                  .substring(0,2)}
+                {avatar ? (
 
-              </div>
+                  <img
+                    src={`http://127.0.0.1:8000${avatar}`}
+                    alt="Profile"
+                    className="h-28 w-28 rounded-full border-4 border-blue-900 object-cover"
+                  />
+
+                ) : (
+
+                  <div className="flex h-28 w-28 items-center justify-center rounded-full bg-blue-900 text-4xl font-bold text-white">
+
+                    {user?.full_name
+                      ?.split(" ")
+                      .map((n) => n[0])
+                      .join("")
+                      .substring(0, 2)}
+
+                  </div>
+
+                )}
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleAvatarChange}
+                />
+
+              </label>
+
+              <p className="mt-3 text-sm text-slate-500">
+                Click photo to change
+              </p>
 
               <h2 className="mt-5 text-2xl font-bold">
+
                 {user?.full_name}
+
               </h2>
 
               <p className="mt-1 text-slate-500">
+
                 {user?.email}
+
               </p>
 
               <span className="mt-5 rounded-full bg-blue-100 px-4 py-2 text-sm font-medium text-blue-800">
+
                 {user?.role}
+
               </span>
 
             </div>
@@ -160,8 +265,7 @@ function Profile() {
           {/* Edit Form */}
 
           <div className="xl:col-span-2 bg-surface border-app rounded-2xl border p-8 shadow-sm">
-
-            <div className="grid gap-6 md:grid-cols-2">
+                      <div className="grid gap-6 md:grid-cols-2">
 
               <Input
                 label="First Name"
@@ -181,7 +285,7 @@ function Profile() {
                 label="Email"
                 name="email"
                 value={form.email}
-                onChange={handleChange}
+                readOnly
               />
 
               <Input
@@ -203,12 +307,14 @@ function Profile() {
             <div className="mt-6">
 
               <label className="mb-2 block font-medium">
+
                 Bio
+
               </label>
 
               <textarea
                 name="bio"
-                rows="5"
+                rows={5}
                 value={form.bio}
                 onChange={handleChange}
                 className="w-full rounded-xl border border-slate-300 p-3"
@@ -220,7 +326,9 @@ function Profile() {
               onClick={handleSave}
               className="mt-8 rounded-xl bg-blue-900 px-6 py-3 font-semibold text-white hover:bg-blue-800"
             >
+
               Save Changes
+
             </button>
 
           </div>
@@ -256,14 +364,22 @@ function Profile() {
 
 }
 
-function Input({ label, ...props }) {
+function Input({
+
+  label,
+
+  ...props
+
+}) {
 
   return (
 
     <div>
 
       <label className="mb-2 block font-medium">
+
         {label}
+
       </label>
 
       <input
@@ -277,18 +393,28 @@ function Input({ label, ...props }) {
 
 }
 
-function Stat({ title, value }) {
+function Stat({
+
+  title,
+
+  value,
+
+}) {
 
   return (
 
     <div className="bg-surface border-app rounded-2xl border p-6 shadow-sm">
 
       <h3 className="text-3xl font-bold">
+
         {value}
+
       </h3>
 
       <p className="mt-2 text-slate-500">
+
         {title}
+
       </p>
 
     </div>

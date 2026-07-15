@@ -29,3 +29,22 @@ export async function changePassword(passwordData) {
   return response.data;
 
 }
+export async function uploadAvatar(file) {
+
+  const formData = new FormData();
+
+  formData.append("file", file);
+
+  const response = await API.post(
+    "/profile/avatar",
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  return response.data;
+
+}

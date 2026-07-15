@@ -41,11 +41,23 @@ function ProfileDropdown() {
         className="flex items-center gap-3 rounded-xl border border-app bg-surface px-3 py-2 hover:bg-slate-100"
       >
 
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-900 font-semibold text-white">
+        {user?.profile_image ? (
 
-          {initials}
+          <img
+            src={`http://127.0.0.1:8000${user.profile_image}`}
+            alt="Profile"
+            className="h-10 w-10 rounded-full object-cover"
+          />
 
-        </div>
+        ) : (
+
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-900 font-semibold text-white">
+
+            {initials}
+
+          </div>
+
+        )}
 
         <ChevronDown size={18} />
 

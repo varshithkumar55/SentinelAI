@@ -7,7 +7,9 @@ from app.core.config import DATABASE_URL
 from app.database.session import Base
 
 # Import all models here
+# Import all models here
 from app.models.user import User
+from app.models.mission import Mission
 config = context.config
 
 config.set_main_option("sqlalchemy.url", DATABASE_URL)

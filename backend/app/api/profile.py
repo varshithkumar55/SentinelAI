@@ -1,7 +1,11 @@
+import os
+import uuid
 from fastapi import (
     APIRouter,
     Depends,
+    File,
     HTTPException,
+    UploadFile,
 )
 from sqlalchemy.orm import Session
 
@@ -17,6 +21,7 @@ from app.services.profile_service import (
     change_password,
     get_profile,
     update_profile,
+    upload_avatar,
 )
 
 router = APIRouter(
@@ -48,6 +53,7 @@ def get_my_profile(
         phone=user.phone,
         organization=user.organization,
         bio=user.bio,
+        profile_image=user.profile_image,
     )
 
 
@@ -76,6 +82,7 @@ def update_my_profile(
         phone=user.phone,
         organization=user.organization,
         bio=user.bio,
+        profile_image=user.profile_image,
     )
 @router.put("/change-password")
 def change_my_password(
@@ -94,6 +101,32 @@ def change_my_password(
 
         return {
             "message": "Password updated successfully."
+        }
+
+    except ValueError as e:
+
+        raise HTTPException(
+            status_code=400,
+            detail=str(e),
+        )
+@router.post("/avatar")
+def upload_profile_avatar(
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+
+    try:
+
+        user = upload_avatar(
+            db,
+            current_user,
+            file,
+        )
+
+        return {
+            "message": "Avatar uploaded successfully.",
+            "profile_image": user.profile_image,
         }
 
     except ValueError as e:

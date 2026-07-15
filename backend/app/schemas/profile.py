@@ -2,6 +2,7 @@ from pydantic import BaseModel, EmailStr, Field
 
 
 class ProfileResponse(BaseModel):
+
     id: str
 
     first_name: str
@@ -18,7 +19,7 @@ class ProfileResponse(BaseModel):
 
     bio: str | None = None
 
-
+    profile_image: str | None = None
 class ProfileUpdateRequest(BaseModel):
     first_name: str = Field(
         min_length=2,

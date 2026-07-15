@@ -7,7 +7,7 @@ from sqlalchemy import Enum
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
-
+from sqlalchemy.orm import relationship
 from app.database.base import BaseModel
 
 
@@ -85,3 +85,7 @@ class User(BaseModel):
     @property
     def full_name(self) -> str:
         return f"{self.first_name} {self.last_name}"
+    missions = relationship(
+    "Mission",
+    back_populates="user",
+    )
