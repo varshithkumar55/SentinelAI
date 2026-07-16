@@ -1,5 +1,6 @@
-import { getMissions } from "../../services/storage/missionStorage";
+import useMissions from "../../hooks/useMissions";
 import { formatDateTime } from "../../utils/dateFormatter";
+
 function badgeColor(level) {
   switch (level) {
     case "Critical":
@@ -18,72 +19,91 @@ function badgeColor(level) {
 
 function RecentMissions() {
 
-  const missions = getMissions();
+  const { missions, loading } = useMissions();
+
+  if (loading) {
+    return (
+      <div className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm">
+        <h2 className="mb-5 text-xl font-bold">
+          Recent Missions
+        </h2>
+
+        <p className="text-slate-500">
+          Loading missions...
+        </p>
+      </div>
+    );
+  }
 
   return (
 
     <div className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm">
 
       <h2 className="mb-5 text-xl font-bold">
-
         Recent Missions
-
       </h2>
 
       <div className="space-y-4">
 
-        {missions.map((mission) => (
+        {missions.length === 0 ? (
 
-          <div
-            key={mission.id}
-            className="flex items-center justify-between rounded-xl border border-slate-100 p-4"
-          >
+          <p className="text-slate-500">
+            No missions available.
+          </p>
 
-            <div>
+        ) : (
 
-              <h3 className="font-semibold">
+          missions.map((mission) => (
 
-                {mission.scenario}
+            <div
+              key={mission.id}
+              className="flex items-center justify-between rounded-xl border border-slate-100 p-4"
+            >
 
-              </h3>
+              <div>
 
-              <p className="text-sm text-slate-500">
+                <h3 className="font-semibold">
+                  {mission.scenario}
+                </h3>
 
-                AI Confidence{" "}
+                <p className="text-sm text-slate-500">
+
+                  AI Confidence{" "}
+
                   {(() => {
-                    let confidence = Number(mission.confidence) || 0;
 
-                    if (confidence <= 1) {
+                    let confidence =
+                      Number(mission.confidence) || 0;
+
+                    if (confidence <= 1)
                       confidence *= 100;
-                    }
 
                     return Math.round(confidence);
+
                   })()}
                   %
 
-              </p>
+                </p>
 
-              <p className="text-xs text-slate-400 mt-1">
+                <p className="mt-1 text-xs text-slate-400">
+                  {formatDateTime(mission.createdAt)}
+                </p>
 
-                {formatDateTime(mission.createdAt)}
+              </div>
 
-              </p>
+              <span
+                className={`rounded-full px-3 py-1 text-sm font-medium ${badgeColor(
+                  mission.risk_level
+                )}`}
+              >
+                {mission.risk_level}
+              </span>
 
             </div>
 
-            <span
-              className={`rounded-full px-3 py-1 text-sm font-medium ${badgeColor(
-                mission.risk_level
-              )}`}
-            >
+          ))
 
-              {mission.risk_level}
-
-            </span>
-
-          </div>
-
-        ))}
+        )}
 
       </div>
 

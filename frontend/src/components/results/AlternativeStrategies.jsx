@@ -1,76 +1,95 @@
 function AlternativeStrategies({ data }) {
+
+  const strategies =
+    data.alternative_strategies || [];
+
   return (
+
     <div className="rounded-2xl bg-surface p-6 shadow-sm">
 
       <h2 className="mb-6 text-2xl font-bold">
         Alternative Strategies
       </h2>
 
-      <div className="space-y-6">
+      {strategies.length === 0 ? (
 
-        {data.alternative_strategies.map((strategy, index) => (
+        <p className="text-slate-500">
 
-          <div
-            key={index}
-            className="rounded-xl border p-5"
-          >
+          No alternative strategies available.
 
-            <h3 className="text-xl font-bold">
-              {strategy.name || "Unnamed Strategy"}
-            </h3>
+        </p>
 
-            <p className="mt-3 text-slate-600">
-              {strategy.description || "No description available."}
-            </p>
+      ) : (
 
-            <div className="mt-5 grid gap-6 md:grid-cols-2">
+        <div className="space-y-6">
 
-              <div>
+          {strategies.map((strategy, index) => (
 
-                <h4 className="font-semibold text-green-700">
-                  Pros
-                </h4>
+            <div
+              key={index}
+              className="rounded-xl border p-5"
+            >
 
-                <ul className="mt-2 list-disc pl-5">
+              <h3 className="text-xl font-bold">
+                {strategy.name}
+              </h3>
 
-                  {(strategy.pros || []).map((pro, i) => (
-                    <li key={i}>
-                      {pro}
-                    </li>
-                  ))}
+              <p className="mt-3 text-slate-600">
+                {strategy.description}
+              </p>
 
-                </ul>
+              <div className="mt-5 grid gap-6 md:grid-cols-2">
 
-              </div>
+                <div>
 
-              <div>
+                  <h4 className="font-semibold text-green-700">
 
-                <h4 className="font-semibold text-red-700">
-                  Cons
-                </h4>
+                    Pros
 
-                <ul className="mt-2 list-disc pl-5">
+                  </h4>
 
-                  {(strategy.cons || []).map((con, i) => (
-                    <li key={i}>
-                      {con}
-                    </li>
-                  ))}
+                  <ul className="mt-2 list-disc pl-5">
 
-                </ul>
+                    {(strategy.pros || []).map((pro, i) => (
+                      <li key={i}>{pro}</li>
+                    ))}
+
+                  </ul>
+
+                </div>
+
+                <div>
+
+                  <h4 className="font-semibold text-red-700">
+
+                    Cons
+
+                  </h4>
+
+                  <ul className="mt-2 list-disc pl-5">
+
+                    {(strategy.cons || []).map((con, i) => (
+                      <li key={i}>{con}</li>
+                    ))}
+
+                  </ul>
+
+                </div>
 
               </div>
 
             </div>
 
-          </div>
+          ))}
 
-        ))}
+        </div>
 
-      </div>
+      )}
 
     </div>
+
   );
+
 }
 
 export default AlternativeStrategies;

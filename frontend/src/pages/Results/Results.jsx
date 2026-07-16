@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 
 import DashboardLayout from "../../layouts/DashboardLayout";
-
+import { exportMissionPDF } from "../../utils/pdfGenerator";
 import MetricsGrid from "../../components/results/MetricsGrid";
 import SummaryCard from "../../components/results/SummaryCard";
 import ReasoningCard from "../../components/results/ReasoningCard";
@@ -52,10 +52,11 @@ function Results() {
 
         </div>
 
-        <button className="rounded-xl bg-blue-900 px-6 py-3 font-semibold text-white transition hover:bg-blue-800">
-
+        <button
+          onClick={() => exportMissionPDF(state)}
+          className="rounded-xl bg-blue-900 px-6 py-3 font-semibold text-white transition hover:bg-blue-800"
+        >
           Export Report
-
         </button>
 
       </div>
@@ -90,7 +91,7 @@ function Results() {
 
         <TimelineCard data={state} />
 
-        <ResourceChart />
+        <ResourceChart data={state} />
 
       </div>
 

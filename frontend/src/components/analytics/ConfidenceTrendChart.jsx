@@ -8,12 +8,24 @@ import {
   CartesianGrid,
 } from "recharts";
 
-import { getMissions } from "../../services/storage/missionStorage";
+import useMissions from "../../hooks/useMissions";
 
 function ConfidenceTrendChart() {
 
-  const missions = [...getMissions()].reverse();
+  const { missions, loading } = useMissions();
 
+if (loading) {
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm">
+      <h2 className="text-xl font-bold">
+        Confidence Trend
+      </h2>
+      <p>Loading...</p>
+    </div>
+  );
+}
+
+const sortedMissions = [...missions].reverse();
   const data = missions.map((mission, index) => {
 
     let confidence =

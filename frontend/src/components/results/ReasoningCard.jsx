@@ -1,33 +1,60 @@
 function ReasoningCard({ data }) {
+
+  const reasoning =
+    data.reasoning ||
+    (data.recommendation
+      ? [data.recommendation]
+      : []);
+
   return (
+
     <div className="rounded-2xl bg-surface p-6 shadow-sm">
 
       <h2 className="mb-5 text-2xl font-bold">
+
         AI Decision Justification
+
       </h2>
 
-      <div className="space-y-4">
+      {reasoning.length === 0 ? (
 
-        {data.reasoning.map((item, index) => (
+        <p className="text-slate-500">
 
-          <div
-            key={index}
-            className="flex gap-3"
-          >
-            <span className="text-green-600">
-              ✓
-            </span>
+          No reasoning available.
 
-            <p>{item}</p>
+        </p>
 
-          </div>
+      ) : (
 
-        ))}
+        <div className="space-y-4">
 
-      </div>
+          {reasoning.map((item, index) => (
+
+            <div
+              key={index}
+              className="flex gap-3"
+            >
+
+              <span className="text-green-600">
+
+                ✓
+
+              </span>
+
+              <p>{item}</p>
+
+            </div>
+
+          ))}
+
+        </div>
+
+      )}
 
     </div>
+
   );
+
 }
 
 export default ReasoningCard;

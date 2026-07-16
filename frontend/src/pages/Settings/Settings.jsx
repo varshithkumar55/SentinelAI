@@ -1,7 +1,6 @@
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { useState } from "react";
 import { useTheme } from "../../context/ThemeContext";
-import { clearMissions } from "../../services/storage/missionStorage";
 import toast from "react-hot-toast";
 function Settings() {
 
@@ -11,17 +10,9 @@ function Settings() {
 
   function clearHistory() {
 
-    if (
-      window.confirm(
-        "Delete all mission history?"
-      )
-    ) {
-
-      clearMissions();
-      toast.success("Mission history cleared.");
-      
-
-    }
+    toast.error(
+      "This feature will be enabled after backend delete support is added."
+    );
 
   }
 

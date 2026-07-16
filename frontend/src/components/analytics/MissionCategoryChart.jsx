@@ -7,7 +7,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-import { getMissions } from "../../services/storage/missionStorage";
+import useMissions from "../../hooks/useMissions";
 
 const COLORS = [
   "#1E3A8A",
@@ -19,13 +19,18 @@ const COLORS = [
 
 function MissionCategoryChart() {
 
-  const missions = getMissions();
-
+  const { missions, loading } = useMissions();
+  if (loading) {
+    return <p>Loading...</p>;
+  }
   const grouped = {};
 
   missions.forEach((mission) => {
 
-    const category = mission.mission || "Unknown";
+    const category =
+      mission.mission_type ||
+      mission.title ||
+      "Unknown";
 
     grouped[category] = (grouped[category] || 0) + 1;
 

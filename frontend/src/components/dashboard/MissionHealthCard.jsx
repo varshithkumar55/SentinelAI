@@ -1,8 +1,19 @@
-import { getMissions } from "../../services/storage/missionStorage";
+import useMissions from "../../hooks/useMissions";
 
 function MissionHealthCard() {
 
-  const missions = getMissions();
+  const { missions, loading } = useMissions();
+
+  if (loading) {
+    return (
+      <div className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm">
+        <h2 className="text-xl font-bold">
+          Mission Health
+        </h2>
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   let score = 0;
 

@@ -1,8 +1,11 @@
-import { getMissions } from "../../services/storage/missionStorage";
+import useMissions from "../../hooks/useMissions";
 
 function AnalyticsStats() {
 
-  const missions = getMissions();
+  const { missions, loading } = useMissions();
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   const total = missions.length;
 
@@ -29,9 +32,11 @@ function AnalyticsStats() {
     ).length;
 
   const environments =
-    new Set(
-      missions.map(m => m.environment)
-    ).size;
+  new Set(
+    missions
+      .map((m) => m.environment)
+      .filter(Boolean)
+  ).size;
 
   const cards = [
 

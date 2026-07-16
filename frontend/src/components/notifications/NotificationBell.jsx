@@ -2,16 +2,17 @@ import { useState } from "react";
 import { Bell } from "lucide-react";
 
 import NotificationPanel from "./NotificationPanel";
-import { getMissions } from "../../services/storage/missionStorage";
+import useMissions from "../../hooks/useMissions";
 
 function NotificationBell() {
 
   const [open, setOpen] = useState(false);
 
-  const notificationCount = Math.min(
-    getMissions().length,
-    99
-  );
+  const { missions, loading } = useMissions();
+
+  const notificationCount = loading
+    ? 0
+    : Math.min(missions.length, 99);
 
   return (
 

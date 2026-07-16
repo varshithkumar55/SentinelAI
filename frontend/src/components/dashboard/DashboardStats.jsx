@@ -1,71 +1,71 @@
-import { getMissions } from "../../services/storage/missionStorage";
+import useMissions from "../../hooks/useMissions";
 
 function DashboardStats() {
 
-  const missions = getMissions();
+  const { missions, loading } = useMissions();
+
+  if (loading) {
+    return (
+      <div className="text-center py-10">
+        Loading dashboard...
+      </div>
+    );
+  }
 
   const total = missions.length;
 
   const avgConfidence =
-  total === 0
-    ? 0
-    : Math.round(
-        missions.reduce((sum, mission) => {
+    total === 0
+      ? 0
+      : Math.round(
+          missions.reduce((sum, mission) => {
 
-          let confidence = Number(mission.confidence) || 0;
+            let confidence = Number(mission.confidence) || 0;
 
-          // Convert decimal confidence (0.9) → 90
-          if (confidence <= 1) {
-            confidence *= 100;
-          }
+            if (confidence <= 1)
+              confidence *= 100;
 
-          return sum + confidence;
+            return sum + confidence;
 
-        }, 0) / total
-      );
+          }, 0) / total
+        );
 
-  const critical =
-    missions.filter(
-      (m) => m.risk_level === "Critical"
-    ).length;
-
-  const highRisk =
-  missions.filter(
+  const highRisk = missions.filter(
     (m) =>
       m.risk_level === "High" ||
       m.risk_level === "Critical"
   ).length;
 
-const stats = [
-  {
-    title: "Missions Analysed",
-    value: total,
-    color: "bg-blue-100",
-    text: "text-blue-700",
-    icon: "🛰️",
-  },
-  {
-    title: "Reports Generated",
-    value: total,
-    color: "bg-green-100",
-    text: "text-green-700",
-    icon: "📄",
-  },
-  {
-    title: "Average AI Confidence",
-    value: `${avgConfidence}%`,
-    color: "bg-purple-100",
-    text: "text-purple-700",
-    icon: "🎯",
-  },
-  {
-    title: "High-Risk Missions",
-    value: highRisk,
-    color: "bg-red-100",
-    text: "text-red-700",
-    icon: "⚠️",
-  },
-];
+  const stats = [
+    {
+      title: "Missions Analysed",
+      value: total,
+      color: "bg-blue-100",
+      text: "text-blue-700",
+      icon: "🛰️",
+    },
+    {
+      title: "Reports Generated",
+      value: total,
+      color: "bg-green-100",
+      text: "text-green-700",
+      icon: "📄",
+    },
+    {
+      title: "Average AI Confidence",
+      value: `${avgConfidence}%`,
+      color: "bg-purple-100",
+      text: "text-purple-700",
+      icon: "🎯",
+    },
+    {
+      title: "High-Risk Missions",
+      value: highRisk,
+      color: "bg-red-100",
+      text: "text-red-700",
+      icon: "⚠️",
+    },
+  ];
 
   return (
     <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">

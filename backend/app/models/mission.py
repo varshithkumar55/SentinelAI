@@ -14,7 +14,7 @@ from sqlalchemy.orm import (
 )
 
 from app.database.base import BaseModel
-
+from sqlalchemy.dialects.postgresql import JSONB
 
 class Mission(BaseModel):
 
@@ -44,7 +44,10 @@ class Mission(BaseModel):
         Text,
         nullable=True,
     )
-
+    analysis_json: Mapped[dict | None] = mapped_column(
+    JSONB,
+    nullable=True,
+    )
     confidence: Mapped[float] = mapped_column(
         Float,
         default=0,
@@ -68,4 +71,58 @@ class Mission(BaseModel):
     user = relationship(
         "User",
         back_populates="missions",
+    )
+    objective: Mapped[str | None] = mapped_column(
+    Text,
+    nullable=True,
+    )
+
+    environment: Mapped[str | None] = mapped_column(
+    String(100),
+    nullable=True,
+    )
+
+    priority: Mapped[str | None] = mapped_column(
+    String(50),
+    nullable=True,
+    )
+
+    risk_tolerance: Mapped[str | None] = mapped_column(
+    String(50),
+    nullable=True,
+    )
+
+    personnel: Mapped[str | None] = mapped_column(
+    Text,
+    nullable=True,
+    )
+
+    vehicles: Mapped[str | None] = mapped_column(
+    Text,
+    nullable=True,
+    )
+
+    equipment: Mapped[str | None] = mapped_column(
+    Text,
+    nullable=True,
+    )
+
+    budget: Mapped[str | None] = mapped_column(
+    Text,
+    nullable=True,
+    )
+
+    constraints: Mapped[str | None] = mapped_column(
+    Text,
+    nullable=True,
+    )
+
+    duration: Mapped[str | None] = mapped_column(
+    String(100),
+    nullable=True,
+    )
+
+    notes: Mapped[str | None] = mapped_column(
+    Text,
+    nullable=True,
     )

@@ -8,11 +8,22 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-import { getMissions } from "../../services/storage/missionStorage";
+import useMissions from "../../hooks/useMissions";
 
 function MissionTrendChart() {
 
-  const missions = getMissions();
+  const { missions, loading } = useMissions();
+
+  if (loading) {
+    return (
+      <div className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm">
+        <h2 className="mb-6 text-xl font-bold">
+          Mission Trend
+        </h2>
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   // Count missions by date
   const grouped = {};

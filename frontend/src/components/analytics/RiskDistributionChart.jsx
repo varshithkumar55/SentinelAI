@@ -7,7 +7,7 @@ import {
   Legend,
 } from "recharts";
 
-import { getMissions } from "../../services/storage/missionStorage";
+import useMissions from "../../hooks/useMissions";
 
 const COLORS = {
   Critical: "#DC2626",
@@ -18,7 +18,10 @@ const COLORS = {
 
 function RiskDistributionChart() {
 
-  const missions = getMissions();
+  const { missions, loading } = useMissions();
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   const counts = {
     Critical: 0,

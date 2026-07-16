@@ -8,10 +8,21 @@ import {
   Cell,
 } from "recharts";
 
-import { getMissions } from "../../services/storage/missionStorage";
+import useMissions from "../../hooks/useMissions";
 
 function RiskPieChart() {
-  const missions = getMissions();
+  const { missions, loading } = useMissions();
+
+  if (loading) {
+    return (
+      <div className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm">
+        <h2 className="mb-6 text-xl font-bold">
+          Risk Distribution
+        </h2>
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   const counts = {
     Critical: 0,

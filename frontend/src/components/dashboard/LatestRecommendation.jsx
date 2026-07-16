@@ -1,8 +1,19 @@
-import { getMissions } from "../../services/storage/missionStorage";
+import useMissions from "../../hooks/useMissions";
 import { formatDateTime } from "../../utils/dateFormatter";
 function LatestRecommendation() {
 
-  const missions = getMissions();
+  const { missions, loading } = useMissions();
+
+  if (loading) {
+    return (
+      <div className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm">
+        <h2 className="text-xl font-bold">
+          Latest AI Recommendation
+        </h2>
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   const latest = missions[0];
 

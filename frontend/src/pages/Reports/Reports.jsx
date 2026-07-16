@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, FileDown } from "lucide-react";
 import DashboardLayout from "../../layouts/DashboardLayout";
-import { getMissions } from "../../services/storage/missionStorage";
+import useMissions from "../../hooks/useMissions";
 import { exportMissionPDF } from "../../utils/pdfGenerator";
 import { formatDateTime } from "../../utils/dateFormatter";
 function badgeColor(level) {
@@ -27,14 +27,24 @@ function Reports() {
   const [search, setSearch] = useState("");
   const [riskFilter, setRiskFilter] = useState("All");
 
-  const missions = getMissions();
+  const { missions, loading } = useMissions();
+
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <div className="p-10 text-center">
+          Loading reports...
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   const filteredMissions = missions.filter((mission) => {
     const query = search.toLowerCase();
 
     const matchesSearch =
       mission.scenario.toLowerCase().includes(query) ||
-      mission.mission.toLowerCase().includes(query) ||
+      mission.title.toLowerCase().includes(query) ||
       mission.risk_level.toLowerCase().includes(query);
 
     const matchesRisk =
@@ -122,7 +132,7 @@ function Reports() {
                       </h3>
 
                       <p className="text-sm text-slate-500">
-                        {mission.mission}
+                        {mission.title}
                       </p>
 
                     </td>
@@ -154,7 +164,7 @@ function Reports() {
                     </td>
 
                     <td className="p-5">
-                      {formatDateTime(mission.createdAt)}
+                      {formatDateTime(mission.created_at)}
                     </td>
 
                     <td className="p-5">
@@ -165,8 +175,23 @@ function Reports() {
                           title="View Report"
                           onClick={() =>
                             navigate("/results", {
-                              state: mission,
-                            })
+                              state: mission.analysis_json
+                                ? {
+                                    ...mission.analysis_json,
+
+                                    title: mission.title,
+                                    scenario: mission.scenario,
+
+                                    confidence: mission.confidence,
+                                    risk_level: mission.risk_level,
+                                    recommendation: mission.recommendation,
+                                    ai_response: mission.ai_response,
+
+                                    created_at: mission.created_at,
+                                    status: mission.status,
+                                  }
+                                : mission,
+                              })
                           }
                           className="rounded-lg bg-blue-900 p-2 text-white transition hover:bg-blue-800"
                           >

@@ -1,7 +1,10 @@
-import { getMissions } from "../../services/storage/missionStorage";
+import useMissions from "../../hooks/useMissions";
 
 function DashboardPreview() {
-  const missions = getMissions();
+  const { missions, loading } = useMissions();
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 const latestMission = missions[0];
 
 

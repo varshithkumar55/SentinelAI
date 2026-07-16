@@ -12,7 +12,10 @@ from app.services.auth_service import (
     login_user,
     register_user,
 )
-
+from app.core.security import (
+    create_access_token,
+    decode_token,
+)
 router = APIRouter(
     prefix="/auth",
     tags=["Authentication"],
@@ -87,3 +90,28 @@ def login(
             status_code=401,
             detail=str(e),
         )
+@router.post("/refresh")
+def refresh_token(payload: dict):
+
+    refresh_token = payload.get("refresh_token")
+
+    decoded = decode_token(refresh_token)
+
+    if not decoded:
+
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid refresh token",
+        )
+
+    email = decoded.get("sub")
+
+    access_token = create_access_token(
+        {
+            "sub": email,
+        }
+    )
+
+    return {
+        "access_token": access_token,
+    }

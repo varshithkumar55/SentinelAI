@@ -19,15 +19,17 @@ function TimelineCard({ data }) {
             className="border-l-4 border-blue-900 pl-4"
           >
 
-            <h3 className="font-bold capitalize">
-              {phase.replaceAll("_", " ")}
-            </h3>
+            <h3 className="font-bold text-blue-900">
+              {phase
+                  .replace("phase", "Phase ")
+                  .replaceAll("_", " ")}
+          </h3>
 
-            <p className="mt-2 text-slate-600">
+            <p className="mt-2 whitespace-pre-line leading-7 text-slate-600">
               {typeof value === "object"
-                ? JSON.stringify(value)
-                : value}
-            </p>
+                  ? Object.values(value).join("\n")
+                  : value}
+          </p>
 
           </div>
 

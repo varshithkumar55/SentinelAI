@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { useAuth } from "../../context/AuthContext";
-import { getMissions } from "../../services/storage/missionStorage";
+import useMissions from "../../hooks/useMissions";
 import toast from "react-hot-toast";
 
 import {
@@ -14,31 +14,15 @@ function Profile() {
 
   const { user, updateUser } = useAuth();
 
-  const missions = getMissions();
-
-  const avgConfidence =
-    missions.length === 0
-      ? 0
-      : Math.round(
-          missions.reduce((sum, mission) => {
-            let c = Number(mission.confidence) || 0;
-
-            if (c <= 1) c *= 100;
-
-            return sum + c;
-
-          }, 0) / missions.length
-        );
+  const { missions, loading } = useMissions();
 
   const [form, setForm] = useState({
-
     first_name: user?.full_name?.split(" ")[0] || "",
     last_name: user?.full_name?.split(" ").slice(1).join(" ") || "",
     email: user?.email || "",
     phone: "",
     organization: "",
     bio: "",
-
   });
 
   const [avatar, setAvatar] = useState(null);
@@ -52,28 +36,25 @@ function Profile() {
         const profile = await getProfile();
 
         setForm({
-
           first_name: profile.first_name,
           last_name: profile.last_name,
           email: profile.email,
           phone: profile.phone || "",
           organization: profile.organization || "",
           bio: profile.bio || "",
-
         });
 
         setAvatar(profile.profile_image);
+
         updateUser({
-        ...user,
-        full_name: `${profile.first_name} ${profile.last_name}`,
-        email: profile.email,
-        role: profile.role,
-        profile_image: profile.profile_image,
-      });
+          ...user,
+          full_name: `${profile.first_name} ${profile.last_name}`,
+          email: profile.email,
+          role: profile.role,
+          profile_image: profile.profile_image,
+        });
 
-      }
-
-      catch (error) {
+      } catch (error) {
 
         console.error(error);
 
@@ -85,8 +66,26 @@ function Profile() {
 
     loadProfile();
 
-  }, []);
+  }, [user, updateUser]); 
 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  const avgConfidence =
+    missions.length === 0
+      ? 0
+      : Math.round(
+          missions.reduce((sum, mission) => {
+
+            let c = Number(mission.confidence) || 0;
+
+            if (c <= 1) c *= 100;
+
+            return sum + c;
+
+          }, 0) / missions.length
+        );
   function handleChange(e) {
 
     setForm({

@@ -1,7 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+
 import DashboardLayout from "../../layouts/DashboardLayout";
-import { getAllMissions } from "../../services/missionService";
+
+import {
+  getMissions,
+  getMission,
+  deleteMission,
+} from "../../services/missionService";
+
 function badgeColor(level) {
 
   switch (level) {
@@ -25,30 +32,78 @@ function badgeColor(level) {
 function History() {
 
   const navigate = useNavigate();
-  useEffect(() => {
 
-    async function loadMissions() {
+  const [missions, setMissions] = useState([]);
+  async function openMission(id) {
+    try {
+      const mission = await getMission(id);
 
-      try {
+      navigate("/results", {
+        state: {
+          ...mission,
+          ...(mission.analysis_json || {}),
+          summary:
+            mission.analysis_json?.summary ||
+            mission.ai_response,
+        },
+      });
 
-        const data = await getAllMissions();
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
-        setMissions(data);
+  async function loadMissions() {
 
-      }
+    try {
 
-      catch (error) {
+      const data = await getMissions();
 
-        console.error(error);
-
-      }
+      setMissions(data);
 
     }
+
+    catch (error) {
+
+      console.error(error);
+
+    }
+
+  }
+
+  useEffect(() => {
 
     loadMissions();
 
   }, []);
-  const [missions, setMissions] = useState([]);
+
+  async function handleDelete(id) {
+
+    const ok = window.confirm(
+      "Delete this mission permanently?"
+    );
+
+    if (!ok) return;
+
+    try {
+
+      await deleteMission(id);
+
+      await loadMissions();
+
+      alert("Mission deleted successfully.");
+
+    }
+
+    catch (err) {
+
+      console.error(err);
+
+      alert("Failed to delete mission.");
+
+    }
+
+  }
 
   return (
 
@@ -56,99 +111,108 @@ function History() {
 
       <div className="space-y-8">
 
-        <div className="space-y-6">
+        {missions.length === 0 ? (
 
-          {missions.length === 0 ? (
+          <div className="rounded-2xl border border-dashed border-slate-300 bg-surface p-12 text-center">
 
-            <div className="rounded-2xl border border-dashed border-slate-300 bg-surface p-12 text-center">
+            <h3 className="text-xl font-semibold">
 
-              <h3 className="text-xl font-semibold">
+              No mission history yet
 
-                No mission history yet
+            </h3>
 
-              </h3>
+            <p className="mt-2 text-slate-500">
 
-              <p className="mt-2 text-slate-500">
+              Analyze your first scenario to build your mission timeline.
 
-                Analyze your first scenario to build your mission timeline.
+            </p>
 
-              </p>
+          </div>
 
-            </div>
+        ) : (
 
-          ) : (
+          missions.map((mission) => (
 
-            missions.map((mission) => (
+            <div
+              key={mission.id}
+              className="cursor-pointer rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm transition hover:shadow-md"
+              onClick={() => openMission(mission.id)}
+            >
 
-              <div
-                key={mission.id}
-                className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm transition hover:shadow-md cursor-pointer"
-                onClick={() =>
-                  navigate("/results", {
-                    state: {
-                    ...mission,
-                    summary: mission.ai_response,
-                },
-              })
-                }
-              >
+              <div className="flex items-start justify-between">
 
-                <div className="flex items-start justify-between">
+                <div>
 
-                  <div>
+                  <h2 className="text-xl font-bold">
 
-                    <h2 className="text-xl font-bold">
+                    {mission.title}
 
-                      {mission.title}
+                  </h2>
 
-                    </h2>
+                  <p className="mt-1 text-slate-500">
 
-                    <p className="mt-1 text-slate-500">
-
-                      {mission.mission_type}
-
-                    </p>
-
-                    <p className="mt-3 text-sm text-slate-400">
-
-                      {new Date(mission.created_at).toLocaleString()}
+                    {mission.mission_type}
 
                   </p>
 
-                  </div>
+                  <p className="mt-3 text-sm text-slate-400">
 
-                  <div className="text-right">
+                    {new Date(
+                      mission.created_at
+                    ).toLocaleString()}
 
-                    <span
-                      className={`rounded-full px-3 py-1 text-sm font-medium ${badgeColor(
-                        mission.risk_level
-                      )}`}
-                    >
+                  </p>
 
-                      {mission.risk_level}
+                </div>
 
-                    </span>
+                <div className="text-right">
 
-                    <p className="mt-3 text-lg font-semibold">
+                  <span
+                    className={`rounded-full px-3 py-1 text-sm font-medium ${badgeColor(
+                      mission.risk_level
+                    )}`}
+                  >
 
-                      {mission.confidence <= 1
-                        ? Math.round(mission.confidence * 100)
-                        : mission.confidence}
-                      %
+                    {mission.risk_level}
 
-                    </p>
+                  </span>
 
-                  </div>
+                  <p className="mt-3 text-lg font-semibold">
+
+                    {mission.confidence <= 1
+                      ? Math.round(
+                          mission.confidence * 100
+                        )
+                      : mission.confidence}
+
+                    %
+
+                  </p>
+
+                  <button
+                    className="mt-4 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+                    onClick={(e) => {
+
+                      e.stopPropagation();
+
+                      handleDelete(mission.id);
+
+                    }}
+                  >
+
+                    🗑 Delete
+
+                  </button>
 
                 </div>
 
               </div>
 
-            ))
+            </div>
 
-          )}
+          ))
 
-        </div>
+        )}
 
       </div>
 

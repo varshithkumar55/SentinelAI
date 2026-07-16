@@ -41,5 +41,9 @@ def analyze_scenario(data):
 
     except (ValueError, TypeError):
         result["confidence"] = 0
+    if "resource_plan" in result and "resource_allocation" not in result:
+        result["resource_allocation"] = result["resource_plan"]
 
+    if "resource_allocation" in result and "resource_plan" not in result:
+        result["resource_plan"] = result["resource_allocation"]
     return result

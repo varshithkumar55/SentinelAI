@@ -1,13 +1,16 @@
 import { ArrowRight, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { getMissions } from "../../services/storage/missionStorage";
+import useMissions from "../../hooks/useMissions";
 import { Button } from "../ui";
 import DashboardPreview from "../dashboard/DashboardPreview";
 
 function Hero() {
 
   const navigate = useNavigate();
-  const missions = getMissions();
+  const { missions, loading } = useMissions();
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
 const latestMission = missions[0];
 

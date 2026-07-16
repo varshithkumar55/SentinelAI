@@ -8,17 +8,22 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-import { getMissions } from "../../services/storage/missionStorage";
+import useMissions from "../../hooks/useMissions";
 
 function EnvironmentAnalysisChart() {
 
-  const missions = getMissions();
+  const { missions, loading } = useMissions();
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   const grouped = {};
 
   missions.forEach((mission) => {
 
-    const env = mission.environment || "Unknown";
+    const env = mission.environment;
+
+    if (!env || env === "Unknown") return;
 
     grouped[env] = (grouped[env] || 0) + 1;
 

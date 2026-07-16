@@ -1,8 +1,10 @@
-import { getMissions } from "../../services/storage/missionStorage";
-
+import useMissions from "../../hooks/useMissions";
 function IntelligenceSummary() {
 
-  const missions = getMissions();
+  const { missions, loading } = useMissions();
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   if (missions.length === 0) {
     return (
@@ -40,26 +42,38 @@ function IntelligenceSummary() {
 
   const environments = {};
 
-  missions.forEach(m => {
+  missions.forEach((m) => {
+
+    if (!m.environment || m.environment === "Unknown") return;
+
     environments[m.environment] =
       (environments[m.environment] || 0) + 1;
+
   });
 
   const topEnvironment =
-    Object.entries(environments)
-      .sort((a,b)=>b[1]-a[1])[0][0];
-
+  Object.entries(environments)
+  .sort((a,b)=>b[1]-a[1])[0]?.[0] || "N/A";
+  
   const missionTypes = {};
 
-  missions.forEach(m => {
-    missionTypes[m.mission] =
-      (missionTypes[m.mission] || 0) + 1;
+  missions.forEach((m) => {
+
+  const type =
+    m.mission_type ||
+    m.title ||
+    "Unknown";
+
+  missionTypes[type] =
+    (missionTypes[type] || 0) + 1;
+
   });
 
   const topMission =
-    Object.entries(missionTypes)
-      .sort((a,b)=>b[1]-a[1])[0][0];
-
+  Object.entries(missionTypes).length
+    ? Object.entries(missionTypes)
+        .sort((a,b)=>b[1]-a[1])[0][0]
+    : "Unknown";
   const insights = [
 
     `Total missions analyzed: ${total}`,

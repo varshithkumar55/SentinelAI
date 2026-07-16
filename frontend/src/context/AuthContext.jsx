@@ -44,7 +44,10 @@ export function AuthProvider({ children }) {
       "token",
       authData.access_token
     );
-
+    storage.setItem(
+      "refresh_token",
+      authData.refresh_token
+    );
     storage.setItem(
       "user",
       JSON.stringify(authData.user)
@@ -63,7 +66,8 @@ export function AuthProvider({ children }) {
 
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("user");
-
+    localStorage.removeItem("refresh_token");
+    sessionStorage.removeItem("refresh_token");
     setToken(null);
 
     setUser(null);
