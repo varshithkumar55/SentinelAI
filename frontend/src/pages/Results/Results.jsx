@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom";
 
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { exportMissionPDF } from "../../utils/pdfGenerator";
+
 import MetricsGrid from "../../components/results/MetricsGrid";
 import SummaryCard from "../../components/results/SummaryCard";
 import ReasoningCard from "../../components/results/ReasoningCard";
@@ -38,11 +39,11 @@ function Results() {
 
       {/* Header */}
 
-      <div className="mb-10 flex items-center justify-between">
+      <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
 
         <div>
 
-          <h1 className="text-4xl font-bold text-slate-900">
+          <h1 className="text-3xl font-bold text-slate-900 md:text-4xl">
             AI Mission Analysis
           </h1>
 
@@ -54,7 +55,7 @@ function Results() {
 
         <button
           onClick={() => exportMissionPDF(state)}
-          className="rounded-xl bg-blue-900 px-6 py-3 font-semibold text-white transition hover:bg-blue-800"
+          className="w-full rounded-xl bg-blue-900 px-6 py-3 font-semibold text-white transition hover:bg-blue-800 lg:w-auto"
         >
           Export Report
         </button>

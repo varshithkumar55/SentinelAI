@@ -1,15 +1,24 @@
 import useMissions from "../../hooks/useMissions";
-
+import Skeleton from "../common/Skeleton";
 function DashboardStats() {
 
   const { missions, loading } = useMissions();
 
   if (loading) {
     return (
-      <div className="text-center py-10">
-        Loading dashboard...
-      </div>
-    );
+    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+      {[1, 2, 3, 4].map((i) => (
+        <div
+          key={i}
+          className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm"
+        >
+          <Skeleton className="h-14 w-14" />
+          <Skeleton className="mt-6 h-10 w-24" />
+          <Skeleton className="mt-3 h-4 w-36" />
+        </div>
+      ))}
+    </div>
+  );
   }
 
   const total = missions.length;

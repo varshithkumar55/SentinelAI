@@ -6,7 +6,7 @@ import {
   BarChart3,
   CloudCog,
 } from "lucide-react";
-
+import { toast } from "react-toastify";
 const features = [
   {
     icon: BrainCircuit,

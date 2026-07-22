@@ -2,19 +2,23 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.database.session import get_db
-from app.schemas.auth import (
-    LoginRequest,
-    RegisterRequest,
-    TokenResponse,
-    UserResponse,
-)
-from app.services.auth_service import (
-    login_user,
-    register_user,
-)
 from app.core.security import (
     create_access_token,
     decode_token,
+)
+from app.schemas.auth import (
+    RegisterRequest,
+    LoginRequest,
+    TokenResponse,
+    UserResponse,
+    ForgotPasswordRequest,
+    ResetPasswordRequest,
+)
+from app.services.auth_service import (
+    register_user,
+    login_user,
+    forgot_password,
+    reset_password,
 )
 router = APIRouter(
     prefix="/auth",
@@ -73,16 +77,17 @@ def login(
             access_token=result["access_token"],
             refresh_token=result["refresh_token"],
             user=UserResponse(
-    id=str(user.id),
-    full_name=user.full_name,
-    email=user.email,
-    role=user.role.value,
-    email_verified=user.email_verified,
-    phone=user.phone,
-    organization=user.organization,
-    bio=user.bio,
-)
+            id=str(user.id),
+            full_name=user.full_name,
+            email=user.email,
+            role=user.role.value,
+            email_verified=user.email_verified,
+            phone=user.phone,
+            organization=user.organization,
+            bio=user.bio,
         )
+    )
+    
 
     except ValueError as e:
 
@@ -90,6 +95,29 @@ def login(
             status_code=401,
             detail=str(e),
         )
+@router.post("/forgot-password")
+def forgot_password_route(
+    request: ForgotPasswordRequest,
+    db: Session = Depends(get_db),
+):
+    forgot_password(db, request)
+
+    return {
+        "message": (
+            "If an account with that email exists, "
+            "a password reset link has been sent."
+        )
+    }
+@router.post("/reset-password")
+def reset_password_route(
+    request: ResetPasswordRequest,
+    db: Session = Depends(get_db),
+):
+    reset_password(db, request)
+
+    return {
+        "message": "Password has been reset successfully."
+    }
 @router.post("/refresh")
 def refresh_token(payload: dict):
 

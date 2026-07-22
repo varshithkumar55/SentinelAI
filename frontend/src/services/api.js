@@ -2,12 +2,11 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const API = axios.create({
-  baseURL: "http://127.0.0.1:8000",
+  baseURL: import.meta.env.VITE_API_URL,
 });
-
 let isRefreshing = false;
 let failedQueue = [];
-
+let sessionExpiredShown = false;
 function processQueue(error, token = null) {
   failedQueue.forEach((promise) => {
     if (error) {
@@ -80,7 +79,7 @@ API.interceptors.response.use(
         }
 
         const response = await axios.post(
-          "http://127.0.0.1:8000/auth/refresh",
+          `${import.meta.env.VITE_API_URL}/auth/refresh`,
           {
             refresh_token: refreshToken,
           }
@@ -123,13 +122,23 @@ API.interceptors.response.use(
         sessionStorage.removeItem("refresh_token");
         sessionStorage.removeItem("user");
 
-        toast.error(
-          "Session expired. Please login again."
-        );
+        if (!sessionExpiredShown) {
 
-        setTimeout(() => {
-          window.location.href = "/login";
-        }, 1200);
+          sessionExpiredShown = true;
+
+          toast.error(
+            "Session expired. Please login again."
+          );
+
+          setTimeout(() => {
+
+            sessionExpiredShown = false;
+
+            window.location.href = "/login";
+
+          }, 1200);
+
+        }
 
         return Promise.reject(refreshError);
 

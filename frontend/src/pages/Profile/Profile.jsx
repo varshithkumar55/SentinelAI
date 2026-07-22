@@ -28,9 +28,9 @@ function Profile() {
   const [avatar, setAvatar] = useState(null);
 
   useEffect(() => {
-
+    console.log("Profile mounted");
     async function loadProfile() {
-
+      console.log("loadProfile called");
       try {
 
         const profile = await getProfile();
@@ -46,13 +46,13 @@ function Profile() {
 
         setAvatar(profile.profile_image);
 
-        updateUser({
-          ...user,
-          full_name: `${profile.first_name} ${profile.last_name}`,
-          email: profile.email,
-          role: profile.role,
-          profile_image: profile.profile_image,
-        });
+        //updateUser({
+        // ...user,
+        //  full_name: `${profile.first_name} ${profile.last_name}`,
+        //  email: profile.email,
+        //  role: profile.role,
+        //  profile_image: profile.profile_image,
+        //});
 
       } catch (error) {
 
@@ -63,11 +63,13 @@ function Profile() {
       }
 
     }
-
+    return () => {
+    console.log("Profile unmounted");
+  };
     loadProfile();
 
-  }, [user, updateUser]); 
-
+  }, [updateUser]); 
+  console.log("Current form:", form);
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -87,7 +89,7 @@ function Profile() {
           }, 0) / missions.length
         );
   function handleChange(e) {
-
+    console.log("Typing:", e.target.name, e.target.value);
     setForm({
 
       ...form,

@@ -123,7 +123,7 @@ function ScenarioForm() {
 
         status: "Completed",
       });
-
+      toast.success("Mission analysis completed successfully.");
       // Merge form data + AI response
       const completeMission = {
         ...formData,

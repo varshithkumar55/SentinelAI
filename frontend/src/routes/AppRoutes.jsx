@@ -12,6 +12,9 @@ import ProtectedRoute from "./ProtectedRoute";
 import Analytics from "../pages/Analytics/Analytics";
 import Profile from "../pages/Profile/Profile";
 import ChangePassword from "../pages/ChangePassword/ChangePassword";
+import Register from "../pages/Register/Register";
+import ResetPassword from "../pages/ResetPassword/ResetPassword";
+import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 function AppRoutes() {
   return (
     <Routes>
@@ -19,7 +22,15 @@ function AppRoutes() {
       <Route path="/" element={<LandingPage />} />
 
       <Route path="/login" element={<Login />} />
-
+      <Route path="/register" element={<Register />} />
+      <Route
+        path="/reset-password"
+        element={<ResetPassword />}
+      />
+      <Route
+        path="/forgot-password"
+        element={<ForgotPassword />}
+      />
       <Route
         path="/dashboard"
         element={

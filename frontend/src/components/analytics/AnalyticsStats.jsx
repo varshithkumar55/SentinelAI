@@ -1,11 +1,9 @@
 import useMissions from "../../hooks/useMissions";
-
+import Skeleton from "../common/Skeleton";
 function AnalyticsStats() {
 
   const { missions, loading } = useMissions();
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  <Skeleton className="h-80 w-full" />
 
   const total = missions.length;
 

@@ -61,18 +61,17 @@ export function AuthProvider({ children }) {
 
   const logout = () => {
 
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+  localStorage.removeItem("token");
+  localStorage.removeItem("refresh_token");
+  localStorage.removeItem("user");
 
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("user");
-    localStorage.removeItem("refresh_token");
-    sessionStorage.removeItem("refresh_token");
-    setToken(null);
+  sessionStorage.removeItem("token");
+  sessionStorage.removeItem("refresh_token");
+  sessionStorage.removeItem("user");
 
-    setUser(null);
-
-  };
+  setToken(null);
+  setUser(null);
+};
   function updateUser(updatedUser) {
 
     setUser(updatedUser);

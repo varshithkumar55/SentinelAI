@@ -104,23 +104,28 @@ const averageConfidence =
 
           <div className="mt-10 flex flex-wrap gap-4">
 
-  <Button
-  onClick={() => {
-    navigate("/login");
-  }}
->
-  Start Planning
-  <ArrowRight size={18} />
-</Button>
+            <Button
+              onClick={() => navigate("/login")}
+            >
+              Start Planning
+              <ArrowRight size={18} />
+            </Button>
 
-  <Button
-    variant="secondary"
-    onClick={scrollToFeatures}
-  >
-    Explore Features
-  </Button>
+            <Button
+              variant="secondary"
+              onClick={() => navigate("/register")}
+            >
+              Create Account
+            </Button>
 
-</div>
+            <Button
+              variant="secondary"
+              onClick={scrollToFeatures}
+            >
+              Explore Features
+            </Button>
+
+          </div>
 
           {/* Metrics */}
 

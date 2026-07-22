@@ -4,7 +4,6 @@ import { getMissions } from "../services/missionService";
 function normalizeMission(mission) {
   return {
     ...mission,
-
     createdAt: mission.created_at,
     missionType: mission.mission_type,
     aiResponse: mission.ai_response,
@@ -19,6 +18,17 @@ export default function useMissions() {
   const [loading, setLoading] = useState(true);
 
   async function load() {
+    const token =
+      localStorage.getItem("token") ||
+      sessionStorage.getItem("token");
+
+    // Don't call protected API when user isn't logged in
+    if (!token) {
+      setLoading(false);
+      setMissions([]);
+      return;
+    }
+
     try {
       const data = await getMissions();
 

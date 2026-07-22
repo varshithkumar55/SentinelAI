@@ -92,7 +92,7 @@ const latestMission = missions[0];
 
       <div className="mb-6">
 
-        <div className="mb-2 flex justify-between text-sm">
+        <div className="mb-2 flex flex-col gap-4 sm:flex-row sm:justify-between text-sm">
 
           <span>Analysis Progress</span>
 

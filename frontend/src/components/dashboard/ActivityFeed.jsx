@@ -1,25 +1,30 @@
 import useMissions from "../../hooks/useMissions";
 import { formatDateTime } from "../../utils/dateFormatter";
+import EmptyState from "../../components/common/EmptyState";
+import Skeleton from "../common/Skeleton";
 function ActivityFeed() {
 
   const { missions, loading } = useMissions();
 
-  if (loading) {
-    return (
-      <div className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm">
-        <h2 className="mb-6 text-xl font-bold">
-          AI Activity Feed
-        </h2>
-        <p>Loading...</p>
-      </div>
-    );
-  }
+  <Skeleton className="mb-6 h-8 w-40" />
 
-  const activities = missions.flatMap((mission) => [
+  {[1,2,3,4].map(i=>(
+  <div key={i} className="mb-3 flex gap-3">
+    <Skeleton className="h-10 w-10 rounded-full"/>
+    <div className="flex-1">
+      <Skeleton className="h-4 w-48"/>
+      <Skeleton className="mt-2 h-3 w-28"/>
+    </div>
+  </div>
+  ))}
+
+  const activities = missions
+  .slice(0, 5)
+  .flatMap((mission) => [
     {
       id: `${mission.id}-analysis`,
       icon: "🟢",
-      title: `${mission.scenario} analyzed`,
+      title: `${mission.title} analyzed`,
       time: mission.createdAt,
     },
     {
@@ -35,7 +40,9 @@ function ActivityFeed() {
       time: mission.createdAt,
     },
   ]);
-
+  activities.sort(
+  (a, b) => new Date(b.time) - new Date(a.time)
+  );
   return (
 
     <div className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm">
@@ -50,11 +57,11 @@ function ActivityFeed() {
 
         {activities.length === 0 ? (
 
-          <p className="text-slate-500">
-
-            No activity yet.
-
-          </p>
+          <EmptyState
+            icon="🤖"
+            title="No Activity"
+            description="Mission activity will appear here after analysis."
+          />
 
         ) : (
 

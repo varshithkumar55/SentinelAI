@@ -4,7 +4,7 @@ import {
   Target,
   CheckCircle2,
 } from "lucide-react";
-
+import { toast } from "react-toastify";
 function MetricsGrid({ data }) {
   const confidence = Number(data.confidence) || 0;
 

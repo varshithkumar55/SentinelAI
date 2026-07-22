@@ -81,7 +81,15 @@ class User(BaseModel):
         DateTime(timezone=True),
         nullable=True,
     )
+    password_reset_token: Mapped[str | None] = mapped_column(
+        String(255),
+        nullable=True,
+    )
 
+    password_reset_expires: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+    )
     @property
     def full_name(self) -> str:
         return f"{self.first_name} {self.last_name}"

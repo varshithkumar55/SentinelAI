@@ -1,6 +1,7 @@
 import useMissions from "../../hooks/useMissions";
 import { formatDateTime } from "../../utils/dateFormatter";
-
+import EmptyState from "../../components/common/EmptyState";
+import Skeleton from "../common/Skeleton";
 function badgeColor(level) {
   switch (level) {
     case "Critical":
@@ -22,19 +23,25 @@ function RecentMissions() {
   const { missions, loading } = useMissions();
 
   if (loading) {
-    return (
-      <div className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm">
-        <h2 className="mb-5 text-xl font-bold">
-          Recent Missions
-        </h2>
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm">
 
-        <p className="text-slate-500">
-          Loading missions...
-        </p>
-      </div>
-    );
-  }
+      <Skeleton className="mb-6 h-8 w-48" />
 
+      {[1, 2, 3].map((i) => (
+        <div
+          key={i}
+          className="mb-4 rounded-xl border border-slate-100 p-4"
+        >
+          <Skeleton className="h-5 w-52" />
+          <Skeleton className="mt-3 h-4 w-32" />
+          <Skeleton className="mt-3 h-4 w-28" />
+        </div>
+      ))}
+
+    </div>
+  );
+}
   return (
 
     <div className="rounded-2xl border border-slate-200 bg-surface p-6 shadow-sm">
@@ -47,13 +54,15 @@ function RecentMissions() {
 
         {missions.length === 0 ? (
 
-          <p className="text-slate-500">
-            No missions available.
-          </p>
+          <EmptyState
+            icon="🛰️"
+            title="No Missions"
+            description="Create your first AI mission analysis."
+          />
 
         ) : (
 
-          missions.map((mission) => (
+          missions.slice(0, 5).map((mission) => (
 
             <div
               key={mission.id}
@@ -63,7 +72,7 @@ function RecentMissions() {
               <div>
 
                 <h3 className="font-semibold">
-                  {mission.scenario}
+                  {mission.title}
                 </h3>
 
                 <p className="text-sm text-slate-500">

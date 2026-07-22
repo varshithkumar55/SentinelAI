@@ -24,15 +24,15 @@ function Dashboard() {
         </div>
         <DashboardStats />
 
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
           <MissionTrendChart />
           <RiskPieChart />
         </div>
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
           <RecentMissions />
           <ActivityFeed />
         </div>
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-6 grid-cols-1 lg:grid-cols-3">
 
           <MissionHealthCard />
 

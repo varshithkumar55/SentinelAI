@@ -33,7 +33,21 @@ class LoginRequest(BaseModel):
 
     remember_me: bool = False
 
+class ForgotPasswordRequest(BaseModel):
 
+    email: EmailStr
+
+
+class ResetPasswordRequest(BaseModel):
+
+    token: str
+
+    password: str = Field(
+        min_length=8,
+        max_length=128,
+    )
+
+    confirm_password: str
 class UserResponse(BaseModel):
 
     id: str

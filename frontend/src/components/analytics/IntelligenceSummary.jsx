@@ -1,4 +1,5 @@
 import useMissions from "../../hooks/useMissions";
+import EmptyState from "../../components/common/EmptyState";
 function IntelligenceSummary() {
 
   const { missions, loading } = useMissions();
@@ -13,9 +14,11 @@ function IntelligenceSummary() {
           🧠 Executive Intelligence Brief
         </h2>
 
-        <p className="text-secondary">
-          No mission intelligence available.
-        </p>
+        <EmptyState
+          icon="📊"
+          title="No Analytics"
+          description="Mission intelligence will appear after your first analysis."
+        />
       </div>
     );
   }

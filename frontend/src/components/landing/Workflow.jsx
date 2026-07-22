@@ -6,7 +6,7 @@ import {
   FileCheck2,
   ArrowDown,
 } from "lucide-react";
-
+import { toast } from "react-toastify";
 const workflowSteps = [
   {
     icon: FileText,

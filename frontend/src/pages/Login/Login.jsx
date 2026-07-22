@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { ShieldCheck } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+
+import AuthLayout from "../../components/auth/AuthLayout";
+import EmailInput from "../../components/auth/EmailInput";
+import PasswordInput from "../../components/auth/PasswordInput";
+import Button from "../../components/ui/Button";
 
 import { loginUser } from "../../services/authService";
 import { useAuth } from "../../context/AuthContext";
@@ -9,31 +13,20 @@ import { useAuth } from "../../context/AuthContext";
 function Login() {
   const navigate = useNavigate();
 
-  const {
-    login,
-    isAuthenticated,
-  } = useAuth();
+  const { login, isAuthenticated } = useAuth();
 
   const [email, setEmail] = useState("");
-
   const [password, setPassword] = useState("");
-
   const [rememberMe, setRememberMe] = useState(false);
-
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-
     if (isAuthenticated) {
-
       navigate("/dashboard");
-
     }
-
   }, [isAuthenticated, navigate]);
 
   const handleLogin = async () => {
-
     if (!email.trim()) {
       toast.error("Email is required.");
       return;
@@ -45,7 +38,6 @@ function Login() {
     }
 
     try {
-
       setLoading(true);
 
       const response = await loginUser({
@@ -56,116 +48,85 @@ function Login() {
 
       login(response, rememberMe);
 
-      toast.success(
-        `Welcome back, ${response.user.full_name}!`
-      );
+      toast.success(`Welcome back, ${response.user.full_name}!`);
 
       navigate("/dashboard");
-
     } catch (error) {
-
       if (error.response?.data?.detail) {
-
-        toast.error(
-          error.response.data.detail
-        );
-
+        toast.error(error.response.data.detail);
       } else {
-
-        toast.error(
-          "Unable to connect to server."
-        );
-
+        toast.error("Unable to connect to server.");
       }
-
     } finally {
-
       setLoading(false);
-
     }
-
   };
 
   return (
+    <AuthLayout
+      title="Welcome Back"
+      subtitle="Sign in to continue to SentinelAI"
+    >
+      <div className="space-y-5">
 
-    <div className="flex min-h-screen items-center justify-center bg-slate-100">
+        <EmailInput
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-      <div className="w-full max-w-md rounded-3xl bg-surface p-10 shadow-lg">
+        <PasswordInput
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-        <div className="mb-8 flex flex-col items-center">
+        <div className="flex items-center justify-between">
 
-          <div className="rounded-2xl bg-blue-900 p-4 text-white">
-
-            <ShieldCheck size={40} />
-
-          </div>
-
-          <h1 className="mt-4 text-3xl font-bold">
-            SentinelAI
-          </h1>
-
-          <p className="mt-2 text-slate-500">
-            Decision Intelligence Platform
-          </p>
-
-        </div>
-
-        <div className="space-y-5">
-
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) =>
-              setEmail(e.target.value)
-            }
-            className="w-full rounded-xl border p-3"
-          />
-
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) =>
-              setPassword(e.target.value)
-            }
-            className="w-full rounded-xl border p-3"
-          />
-
-          <label className="flex items-center gap-2 text-sm text-slate-600">
+          <label className="flex items-center gap-2 text-sm text-slate-300">
 
             <input
               type="checkbox"
               checked={rememberMe}
-              onChange={(e) =>
-                setRememberMe(
-                  e.target.checked
-                )
-              }
+              onChange={(e) => setRememberMe(e.target.checked)}
+              className="h-4 w-4 rounded border-slate-600 accent-blue-600"
             />
 
             Remember Me
 
           </label>
 
-          <button
-            onClick={handleLogin}
-            disabled={loading}
-            className="w-full rounded-xl bg-blue-900 py-3 font-semibold text-white transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:bg-slate-400"
+          <Link
+            to="/forgot-password"
+            className="text-sm font-medium text-primary hover:underline"
           >
+            Forgot Password?
+          </Link>
 
-            {loading
-              ? "Logging in..."
-              : "Login"}
+        </div>
 
-          </button>
+        <Button
+          onClick={handleLogin}
+          loading={loading}
+          className="w-full bg-gradient-to-r from-blue-700 to-cyan-600 hover:from-blue-600 hover:to-cyan-500"
+        >
+          Login
+        </Button>
+
+        <div className="text-center text-sm text-slate-300">
+
+          Don't have an account?{" "}
+
+          <Link
+            to="/register"
+            className="font-semibold text-cyan-400 hover:text-cyan-300"
+          >
+            Create Account
+          </Link>
 
         </div>
 
       </div>
-
-    </div>
-
+    </AuthLayout>
   );
 }
 
