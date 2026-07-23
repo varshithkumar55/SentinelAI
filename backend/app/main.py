@@ -10,10 +10,11 @@ app.mount(
     StaticFiles(directory="uploads"),
     name="uploads",
 )
-origins = os.getenv(
-    "ALLOWED_ORIGINS",
-    "http://localhost:3000,http://localhost:5173"
-).split(",")
+origins = [
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://sentinelai-env.eba-mtjhwpwm.ap-south-1.elasticbeanstalk.com",
+]
 
 app.add_middleware(
     CORSMiddleware,

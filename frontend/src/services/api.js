@@ -2,7 +2,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: "/api",
 });
 let isRefreshing = false;
 let failedQueue = [];
@@ -79,7 +79,7 @@ API.interceptors.response.use(
         }
 
         const response = await axios.post(
-          `${import.meta.env.VITE_API_URL}/auth/refresh`,
+          "/api/auth/refresh",
           {
             refresh_token: refreshToken,
           }
